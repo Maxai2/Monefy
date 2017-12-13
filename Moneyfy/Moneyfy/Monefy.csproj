@@ -44,6 +44,7 @@
     <Compile Include="Account.cs" />
     <Compile Include="Application.cs" />
     <Compile Include="Category.cs" />
+    <Compile Include="Functions.cs" />
     <Compile Include="IConsoleWritable.cs" />
     <Compile Include="ICSVWritable.cs" />
     <Compile Include="MoneyOperation.cs" />

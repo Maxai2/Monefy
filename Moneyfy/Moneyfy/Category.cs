@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //--------------------------------------------------------
-namespace Moneyfy
+namespace Monefy
 {
+    enum Type
+    {
+        Income,
+        Outcome
+    }
+
     public struct Category
     {
         string Name;
-        enum Type
-        {
-            Income,
-            Outcome
-        }
     }
 }
 //--------------------------------------------------------

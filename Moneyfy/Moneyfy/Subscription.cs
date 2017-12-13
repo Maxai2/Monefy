@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //--------------------------------------------------------
-namespace Moneyfy
+namespace Monefy
 {
     enum SubscriptionType { Daily, Weekly, Monthly, Yearly }
 

@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //--------------------------------------------------------
-namespace Moneyfy
+namespace Monefy
 {
     class MoneyOperation : ICSVWritable, IConsoleWritable, IComparable
     {
-        double Amount;
-        Category cat;
-        string Note;
-        DateTime Date;
+        public double Amount { get; set; }
+        public Category cat { get; set; }
+        public string Note { get; set; }
+        public DateTime Date { get; set; }
 
         public void WriteCSV()
         {

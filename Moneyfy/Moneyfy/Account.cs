@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //--------------------------------------------------------
-namespace Moneyfy
+namespace Monefy
 {
     enum Currency { AZN, RUB, EUR, USD }
     
     class Account : ICSVWritable, IConsoleWritable, IComparable
     {
-        string Name;
-        Currency cur;
-        double Money;
-        bool Hidden;
+        public string Name { get; set; }
+        public Currency cur { get; set; }
+        public double Money { get; set; }
+        public bool Hidden { get; set; }
 
         public int CompareTo(object obj)
         {

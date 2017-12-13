@@ -6,10 +6,21 @@ using System.Threading.Tasks;
 //--------------------------------------------------------
 namespace Monefy
 {
-    class Program
+    class Functions
     {
-        static void Main(string[] args)
+        private static Functions instance;
+
+        public static Functions getInstance()
         {
+            if (instance == null)
+                instance = new Functions();
+
+            return instance;
+        }
+
+        void MainFrame()
+        {
+            
         }
     }
 }
