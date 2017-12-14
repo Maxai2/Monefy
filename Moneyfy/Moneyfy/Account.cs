@@ -11,7 +11,7 @@ namespace Monefy
     class Account : ICSVWritable, IConsoleWritable, IComparable
     {
         public string Name { get; set; }
-        public Currency cur { get; set; }
+        public Currency Cur { get; set; }
         public double Money { get; set; }
         public bool Hidden { get; set; }
 

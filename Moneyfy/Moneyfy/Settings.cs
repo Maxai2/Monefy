@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 //--------------------------------------------------------
 namespace Monefy
 {
-    class Program
+    class Settings
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine((char)0x048);
-        }
+        public Currency Cur { get; set; }
+        public Language Lang { get; set; }
     }
 }
 //--------------------------------------------------------

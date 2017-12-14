@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 //--------------------------------------------------------
 namespace Monefy
 {
-    class Program
+    class Data
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine((char)0x048);
-        }
+        //SortedList<>
+        //SortedList<>
     }
 }
 //--------------------------------------------------------

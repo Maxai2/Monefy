@@ -10,11 +10,11 @@ namespace Monefy
 
     class Subscription : ICSVWritable, IConsoleWritable, IComparable
     {
-        string Name;
-        double Amount;
-        DateTime StartDate;
-        DateTime EndDate;
-        SubscriptionType st;
+        public string Name { get; set; }
+        public double Amount { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public SubscriptionType St { get; set; }
 
         public int CompareTo(object obj)
         {

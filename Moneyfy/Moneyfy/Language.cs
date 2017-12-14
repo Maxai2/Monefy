@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //--------------------------------------------------------
 namespace Monefy
 {
-    class Program
+    struct Language
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine((char)0x048);
-        }
+        string Name;
+        //File fl;
     }
 }
 //--------------------------------------------------------
