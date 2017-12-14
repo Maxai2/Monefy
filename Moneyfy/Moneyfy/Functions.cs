@@ -20,7 +20,7 @@ namespace Monefy
 
         void MainFrame()
         {
-            
+            Console.WriteLine(char(0x0450));
         }
     }
 }

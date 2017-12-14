@@ -9,7 +9,7 @@ namespace Monefy
     class MoneyOperation : ICSVWritable, IConsoleWritable, IComparable
     {
         public double Amount { get; set; }
-        public Category cat { get; set; }
+        public Category Cat { get; set; }
         public string Note { get; set; }
         public DateTime Date { get; set; }
 
