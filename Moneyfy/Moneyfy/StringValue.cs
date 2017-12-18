@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 //--------------------------------------------------------
 namespace Monefy
 {
-    class Program
+    class StringValue : System.Attribute
     {
-        static void Main(string[] args)
+        private readonly string _value;
+
+        public StringValue(string value)
         {
-            Functions.getInstance().DrawFrame();
+            _value = value;
+        }
 
-            Console.ForegroundColor = ConsoleColor.Gray;
-
-            Console.SetCursorPosition(0, 30);
+        public string Value
+        {
+            get { return _value; }
         }
     }
 }
