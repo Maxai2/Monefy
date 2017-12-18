@@ -38,17 +38,21 @@ namespace Monefy
 
             for (int i = 0; i < length - 2; i++)
             {
-                if (type == 'd')
-                    Console.Write(DoubleLine[count]);
-                else
-                    Console.Write(SingleLine[count]);
-
-                if (name != "" && i == (length / 2) - (name.Length / 2) + 1)
+                if (name != "" && i == (length - name.Length) / 2) // i == (length / 2) - (name.Length / 2) + 1
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.Write(name);
                     Console.ForegroundColor = frameCol;
+                    i += name.Length;
                 }
+                else
+                {
+                    if (type == 'd')
+                        Console.Write(DoubleLine[count]);
+                    else
+                        Console.Write(SingleLine[count]);
+                }
+
             }
             count++;
 
@@ -63,13 +67,13 @@ namespace Monefy
 
 
 
-            int size = name == "" ? length : length + name.Length;
+            //int size = name == "" ? length : length + name.Length;
 
             for (int i = 0; i < height - 2; i++)
             {
-                for (int j = 0; j < size; j++)
+                for (int j = 0; j < length; j++)
                 {
-                    if (j == 0 || j == size - 1)
+                    if (j == 0 || j == length - 1)
                     {
                         Console.SetCursorPosition(j + x, i + y + 1);
 
@@ -93,7 +97,7 @@ namespace Monefy
                 Console.Write(SingleLine[count]);
             count++;
 
-            for (int i = 0; i < size - 2; i++)
+            for (int i = 0; i < length - 2; i++)
             {
                 if (type == 'd')
                     Console.Write(DoubleLine[count]);

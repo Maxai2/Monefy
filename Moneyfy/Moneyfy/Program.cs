@@ -10,7 +10,7 @@ namespace Monefy
     {
         static void Main(string[] args)
         {
-            Functions.getInstance().Frame('s', 10, 10, 10, 5, ConsoleColor.Green);
+            Functions.getInstance().Frame('s', 10, 10, 10, 7, ConsoleColor.Green, "Add");
         }
     }
 }
