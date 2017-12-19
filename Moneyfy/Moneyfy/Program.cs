@@ -36,11 +36,14 @@ namespace Monefy
                         }
                         break;
                     case ConsoleKey.F10:
+                        if (!Functions.getInstance().Exit())
+                            goto NOTEXIT;
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.SetCursorPosition(0, 35);
                         Environment.Exit(0);
-
+                        NOTEXIT:
+                        
                         break;
                     default:
                         break;

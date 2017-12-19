@@ -22,16 +22,16 @@ namespace Monefy
 
         char[] SingleLine = { (char)0x250C, (char)0x2500, (char)0x2510, (char)0x2502, (char)0x2514, (char)0x2500, (char)0x2518 };
         //--------------------------------------------------------
-        public void Line(int x, int y, int length, ConsoleColor frameCol, char type = 'h')
+        public void Line(int x, int y, int length, ConsoleColor LineCol, char symbol = '—')
         {
-            Console.ForegroundColor = frameCol;
+            Console.ForegroundColor = LineCol;
 
-            char symb = type == 'h' ? '—' : '|';
+            //char symb = symbol == 'h' ? '—' : '|';
 
             for (int i = 0; i < length; i++)
             {
                 Console.SetCursorPosition(x + i, y);
-                Console.WriteLine(symb);
+                Console.WriteLine(symbol);
             }
 
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -130,7 +130,7 @@ namespace Monefy
 
         public enum BalanceFrame { BalFChar = 'd', BalFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2), BalFY = MainFrame.MFH - 6, BalFH = 7, BalFL = 17, BalFFC = ConsoleColor.DarkGreen, BalFBC = ConsoleColor.Black, [StringValue("")]Balance }
 
-        public enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 5, ExFL = 28, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")]Quit, ExFNC = ConsoleColor.Black }
+        public enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 6, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")]Quit, ExFNC = ConsoleColor.Black }
         //--------------------------------------------------------
         public void DrawFrame()
         {
@@ -206,9 +206,122 @@ namespace Monefy
             }
         }
         //--------------------------------------------------------
-        public void Exit()
+        public bool Exit()
         {
-            Frame(ExitFrame.ExFChar, ExitFrame.ExFX, ExitFrame.ExFY, ExitFrame.ExFH, ExitFrame.ExFL, ExitFrame.ExFFC, ExitFrame.ExFBC, ExitFrame.Quit.ToString(), ExitFrame.ExFNC);
+            Frame((char)ExitFrame.ExFChar, (int)ExitFrame.ExFX, (int)ExitFrame.ExFY, (int)ExitFrame.ExFH, (int)ExitFrame.ExFL, (int)ExitFrame.ExFFC, (ConsoleColor)ExitFrame.ExFBC, ExitFrame.Quit.ToString(), (ConsoleColor)ExitFrame.ExFNC);
+
+            Console.SetCursorPosition((int)ExitFrame.ExFX + 1, (int)ExitFrame.ExFY + 1);
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.WriteLine("Do you want to quit Monefy?");
+            Line((int)ExitFrame.ExFX + 1, (int)ExitFrame.ExFY + 2, (int)ExitFrame.ExFL - 2, ConsoleColor.Black);
+
+            Line((int)ExitFrame.ExFX + 1, (int)ExitFrame.ExFY + 3, (int)ExitFrame.ExFL - 2, ConsoleColor.Gray, ' ');
+
+            bool sel = false;
+            while (true)
+            {
+                Console.SetCursorPosition((int)ExitFrame.ExFX + 6, (int)ExitFrame.ExFY + 3);
+
+                if (sel)
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkGreen;
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                }
+
+                Console.Write("{ Yes }");
+
+                Console.SetCursorPosition((int)ExitFrame.ExFX + 18, (int)ExitFrame.ExFY + 3);
+
+                if (!sel)
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkGreen;
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.BackgroundColor = ConsoleColor.Gray;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                }
+
+                Console.WriteLine("[ No ]");
+
+                var key = Console.ReadKey(true).Key;
+
+                switch (key)
+                {
+                    case ConsoleKey.RightArrow:
+                    case ConsoleKey.LeftArrow:
+                        sel = !sel;
+                        break;
+                    case ConsoleKey.Enter:
+                        if (sel)
+                            return true;
+                        else
+                            return false;
+                }
+            }
+        }
+        //--------------------------------------------------------
+        public void puttext(int x, int y, int height, int length, char[] buffer)
+        {
+            Console.SetCursorPosition(x, y);
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < length; j++)
+                {
+                    Console.
+                }
+            }
+
+        //    static void gettext(int x, int y, int height, int length, ref char[,] buffer)
+        //    {
+        //        Console.SetCursorPosition(x, y);
+
+        //        for (int i = 0; i < height; i++)
+        //        {
+        //            for (int j = 0; j < length; j++)
+        //            {
+        //            [DllImport("winmm.dll")]
+        //bool WINAPI ReadConsoleInput();
+        //buffer[i, j] = (char) Console.SetIn(;
+        //    }
+        //}
+        //        }
+
+        //        static void puttext(int x, int y, ref char[,] buffer)
+        //{
+        //    Console.SetCursorPosition(x, y);
+
+        //    foreach (var item in buffer)
+        //    {
+        //        Console.WriteLine(item);
+        //    }
+        //}
+
+        //static void Main(string[] args)
+        //{
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        for (int j = 0; j < 5; j++)
+        //        {
+        //            Console.Write("*");
+        //        }
+        //        Console.WriteLine();
+        //    }
+
+        //    char[,] buffer = new char[2, 2];
+
+        //    gettext(0, 0, 2, 2, ref buffer);
+
+        //    puttext(0, 9, ref buffer);
+        //}
         }
     }
 }
