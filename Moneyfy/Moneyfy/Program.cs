@@ -10,11 +10,46 @@ namespace Monefy
     {
         static void Main(string[] args)
         {
+            Console.CursorVisible = false;
             Functions.getInstance().DrawFrame();
+            int select = 0;
 
-            Console.ForegroundColor = ConsoleColor.Gray;
+            while (true)
+            {
+                Functions.getInstance().TabGo(select);
 
-            Console.SetCursorPosition(0, 30);
+                var key = Console.ReadKey(true).Key;
+
+                switch (key)
+                {
+                    case ConsoleKey.Tab:
+                        //select < 5 ? select++ : select = 0;
+                        if (select < 4)
+                            select++;
+                        else
+                            select = 0;
+                        break;
+                    case ConsoleKey.Enter:
+                        if (select == 0)
+                        {
+
+                        }
+                        break;
+                    case ConsoleKey.F10:
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.SetCursorPosition(0, 35);
+                        Environment.Exit(0);
+
+                        break;
+                    default:
+                        break;
+                }
+
+                Functions.getInstance().DrawFrame();
+            }
+
+
         }
     }
 }

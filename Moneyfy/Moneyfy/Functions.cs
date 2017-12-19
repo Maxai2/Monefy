@@ -21,28 +21,29 @@ namespace Monefy
         char[] DoubleLine = { (char)0x2554, (char)0x2550, (char)0x2557, (char)0x2551, (char)0x255A, (char)0x2550, (char)0x255D };
 
         char[] SingleLine = { (char)0x250C, (char)0x2500, (char)0x2510, (char)0x2502, (char)0x2514, (char)0x2500, (char)0x2518 };
-
         //--------------------------------------------------------
-        public void Line(int x, int y, int length, ConsoleColor frameCol)
+        public void Line(int x, int y, int length, ConsoleColor frameCol, char type = 'h')
         {
             Console.ForegroundColor = frameCol;
+
+            char symb = type == 'h' ? '—' : '|';
 
             for (int i = 0; i < length; i++)
             {
                 Console.SetCursorPosition(x + i, y);
-                Console.WriteLine("--");
+                Console.WriteLine(symb);
             }
-
 
             Console.ForegroundColor = ConsoleColor.Gray;
         }
         //--------------------------------------------------------
-        public void Frame(char type, int x, int y, int height, int length, ConsoleColor frameCol, string name = "")
+        public void Frame(char type, int x, int y, int height, int length, ConsoleColor frameForCol, ConsoleColor frameBackCol = ConsoleColor.Black, string name = "", ConsoleColor nameCol = ConsoleColor.Cyan)
         {
             int count = 0;
 
             Console.SetCursorPosition(x, y);
-            Console.ForegroundColor = frameCol;
+            Console.ForegroundColor = frameForCol;
+            Console.BackgroundColor = frameBackCol;
 
             if (type == 'd')
                 Console.Write(DoubleLine[count]);
@@ -54,9 +55,9 @@ namespace Monefy
             {
                 if (name != "" && i == (length - name.Length) / 2)
                 {
-                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.ForegroundColor = nameCol;
                     Console.Write(name);
-                    Console.ForegroundColor = frameCol;
+                    Console.ForegroundColor = frameForCol;
                     i += name.Length;
                 }
                 else
@@ -115,57 +116,99 @@ namespace Monefy
             count++;
         }
         //--------------------------------------------------------
-        public enum MainFrameCoord { MFChar = 'd', MFX = 25, MFY = 2, MFH = 25, MFL = 60, MFC = ConsoleColor.Green, [StringValue("")]
-            Monefy }
+        public enum MainFrame { MFChar = 'd', MFX = 15, MFY = 2, MFH = 30, MFL = 70, MFFC = ConsoleColor.Green, MFBC = ConsoleColor.Black, [StringValue("")]MONEFY, MFNC = ConsoleColor.Magenta }
 
-        public enum ReportsFrameCoord { RFChar = 's', RFX = 28, RFY = 4, RFH = 6, RFL = 10, RFC = ConsoleColor.White, [StringValue("")]
-            Reports, RFLL = 5, RFLC = ConsoleColor.Red }
+        public enum ReportsFrame { RepFChar = 's', RepFX = MainFrame.MFX + 2, RepFY = MainFrame.MFY + 1, RepFH = 6, RepFL = 10, RepFFC = ConsoleColor.White, RepFBC = ConsoleColor.Black, [StringValue("")]Reports, RepFLL = 6, RepFLC = ConsoleColor.Red }
 
-        public enum TransferFrameCoord { TFChar = 's', TFX = 60, TFY = 4, TFH = 6, TFL = 11, TFC = ConsoleColor.White, [StringValue("")]
-            Transfer, TFLL = 5, TFLC = ConsoleColor.White }
+        public enum TransferFrame { TraFChar = 's', TraFX = MainFrame.MFL - 10, TraFY = MainFrame.MFY + 1, TraFH = 6, TraFL = 11, TraFFC = ConsoleColor.White, TraFBC = ConsoleColor.Black, [StringValue("")]Transfer, TraFLL = 6, TraFLC = ConsoleColor.White }
 
-        public enum SettingsFrameCoord { SFChar = 's', SFX = 72, SFY = 4, SFH = 6, SFL = 11, SFC = ConsoleColor.White, [StringValue("")]
-            Settings, SFDC = ConsoleColor.White }
+        public enum SettingsFrame { SetFChar = 's', SetFX = MainFrame.MFL + 2, SetFY = MainFrame.MFY + 1, SetFH = 6, SetFL = 11, SetFFC = ConsoleColor.White, SetFBC = ConsoleColor.Black, [StringValue("")] Settings, SetFDC = ConsoleColor.White  }
 
-        public enum SubstractFrameCoord { SubFChar = 's', SubFX = 28, SubFY = 4, SubFH = 6, SubFL = 11, SubFC = ConsoleColor.White, [StringValue("")]
-            Substract, SubFDC = ConsoleColor.White }
+        public enum SubstractFrame { SubFChar = 's', SubFX = MainFrame.MFX + 4, SubFY = MainFrame.MFH - 4, SubFH = 4, SubFL = 12, SubFFC = ConsoleColor.White, SubFBC = ConsoleColor.Black, [StringValue("")]Substract, SubFLL = 5, SubFLC = ConsoleColor.Yellow }
 
+        public enum AdditionFrame { AddFChar = 's', AddFX = MainFrame.MFL - 1, AddFY = MainFrame.MFH - 4, AddFH = 4, AddFL = 11, AddFFC = ConsoleColor.White, AddFBC = ConsoleColor.Black, [StringValue("")]Addition, AddFLL = 5, AddFLC = ConsoleColor.Yellow }
+
+        public enum BalanceFrame { BalFChar = 'd', BalFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2), BalFY = MainFrame.MFH - 6, BalFH = 7, BalFL = 17, BalFFC = ConsoleColor.DarkGreen, BalFBC = ConsoleColor.Black, [StringValue("")]Balance }
+
+        public enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 5, ExFL = 28, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")]Quit, ExFNC = ConsoleColor.Black }
         //--------------------------------------------------------
         public void DrawFrame()
         {
             //Main Frame
-            Frame((char)MainFrameCoord.MFChar, (int)MainFrameCoord.MFX, (int)MainFrameCoord.MFY, (int)MainFrameCoord.MFH, (int)MainFrameCoord.MFL, (ConsoleColor)MainFrameCoord.MFC, MainFrameCoord.Monefy.ToString());
+            Frame((char)MainFrame.MFChar, (int)MainFrame.MFX, (int)MainFrame.MFY, (int)MainFrame.MFH, (int)MainFrame.MFL, (ConsoleColor)MainFrame.MFFC, (ConsoleColor)MainFrame.MFBC, MainFrame.MONEFY.ToString(), (ConsoleColor)MainFrame.MFNC);
 
             //Reports Frame
-            Frame((char)ReportsFrameCoord.RFChar, (int)ReportsFrameCoord.RFX, (int)ReportsFrameCoord.RFY, (int)ReportsFrameCoord.RFH, (int)ReportsFrameCoord.RFL, (ConsoleColor)ReportsFrameCoord.RFC, ReportsFrameCoord.Reports.ToString());
+            Frame((char)ReportsFrame.RepFChar, (int)ReportsFrame.RepFX, (int)ReportsFrame.RepFY, (int)ReportsFrame.RepFH, (int)ReportsFrame.RepFL, (ConsoleColor)ReportsFrame.RepFFC, (ConsoleColor)ReportsFrame.RepFBC, ReportsFrame.Reports.ToString());
 
             for (int i = 0; i < 3; i++)
-                Line((int)ReportsFrameCoord.RFX + 2, (int)ReportsFrameCoord.RFY + 1 + i/*(i == 0 || i == 2 ? i : 0)*/, (int)ReportsFrameCoord.RFLL, (ConsoleColor)ReportsFrameCoord.RFLC);
+                Line((int)ReportsFrame.RepFX + 2, (int)ReportsFrame.RepFY + 1 + i/*(i == 0 || i == 2 ? i : 0)*/, (int)ReportsFrame.RepFLL, (ConsoleColor)ReportsFrame.RepFLC);
 
             //Transfer Frame
-            Frame((char)TransferFrameCoord.TFChar, (int)TransferFrameCoord.TFX, (int)TransferFrameCoord.TFY, (int)TransferFrameCoord.TFH, (int)TransferFrameCoord.TFL, (ConsoleColor)TransferFrameCoord.TFC, TransferFrameCoord.Transfer.ToString());
+            Frame((char)TransferFrame.TraFChar, (int)TransferFrame.TraFX, (int)TransferFrame.TraFY, (int)TransferFrame.TraFH, (int)TransferFrame.TraFL, (ConsoleColor)TransferFrame.TraFFC, (ConsoleColor)TransferFrame.TraFBC, TransferFrame.Transfer.ToString());
 
-            Console.SetCursorPosition((int)TransferFrameCoord.TFX + 2, (int)TransferFrameCoord.TFY + 1);
+            Console.SetCursorPosition((int)TransferFrame.TraFX + 2, (int)TransferFrame.TraFY + 1);
             Console.WriteLine('<');
-            Line((int)TransferFrameCoord.TFX + 3, (int)TransferFrameCoord.TFY + 1, (int)TransferFrameCoord.TFLL, (ConsoleColor)TransferFrameCoord.TFLC);
+            Line((int)TransferFrame.TraFX + 3, (int)TransferFrame.TraFY + 1, (int)TransferFrame.TraFLL, (ConsoleColor)TransferFrame.TraFLC);
 
-            Line((int)TransferFrameCoord.TFX + 2, (int)TransferFrameCoord.TFY + 3, (int)TransferFrameCoord.TFLL, (ConsoleColor)TransferFrameCoord.TFLC);
-            Console.SetCursorPosition((int)TransferFrameCoord.TFX + 2 + (int)TransferFrameCoord.TFLL + 1, (int)TransferFrameCoord.TFY + 3);
+            Line((int)TransferFrame.TraFX + 2, (int)TransferFrame.TraFY + 3, (int)TransferFrame.TraFLL, (ConsoleColor)TransferFrame.TraFLC);
+            Console.SetCursorPosition((int)TransferFrame.TraFX + 2 + (int)TransferFrame.TraFL - 5, (int)TransferFrame.TraFY + 3);
             Console.WriteLine('>');
 
             //Settings Frame
-            Frame((char)SettingsFrameCoord.SFChar, (int)SettingsFrameCoord.SFX, (int)SettingsFrameCoord.SFY, (int)SettingsFrameCoord.SFH, (int)SettingsFrameCoord.SFL, (ConsoleColor)SettingsFrameCoord.SFC, SettingsFrameCoord.Settings.ToString());
-
-            //Encoding encoding = Encoding.UTF8; 
+            Frame((char)SettingsFrame.SetFChar, (int)SettingsFrame.SetFX, (int)SettingsFrame.SetFY, (int)SettingsFrame.SetFH, (int)SettingsFrame.SetFL, (ConsoleColor)SettingsFrame.SetFFC, (ConsoleColor)SettingsFrame.SetFBC, SettingsFrame.Settings.ToString());
 
             for (int i = 0; i < 3; i++)
             {
-                Console.SetCursorPosition((int)SettingsFrameCoord.SFX + 5, (int)SettingsFrameCoord.SFY + 1 + i);
-                Console.WriteLine("*");
+                Console.SetCursorPosition((int)SettingsFrame.SetFX + 5, (int)SettingsFrame.SetFY + 1 + i);
+                Console.WriteLine('*');
             }
 
             //Substract Frame
-            //Frame()
+            Frame((char)SubstractFrame.SubFChar, (int)SubstractFrame.SubFX, (int)SubstractFrame.SubFY, (int)SubstractFrame.SubFH, (int)SubstractFrame.SubFL, (ConsoleColor)SubstractFrame.SubFFC, (ConsoleColor)SubstractFrame.SubFBC, SubstractFrame.Substract.ToString());
+
+            Console.SetCursorPosition((int)SubstractFrame.SubFX + 5, (int)SubstractFrame.SubFY + 1);
+            Console.ForegroundColor = (ConsoleColor)SubstractFrame.SubFLC;
+            Console.WriteLine("---");
+
+            //Additional Frame
+            Frame((char)AdditionFrame.AddFChar, (int)AdditionFrame.AddFX, (int)AdditionFrame.AddFY, (int)AdditionFrame.AddFH, (int)AdditionFrame.AddFL, (ConsoleColor)AdditionFrame.AddFFC, (ConsoleColor)AdditionFrame.AddFBC, AdditionFrame.Addition.ToString());
+
+            Console.SetCursorPosition((int)AdditionFrame.AddFX + 4, (int)AdditionFrame.AddFY + 1);
+            Console.ForegroundColor = (ConsoleColor)AdditionFrame.AddFLC;
+            Console.WriteLine("-+-");
+
+            //Balance Frame
+            Frame((char)BalanceFrame.BalFChar, (int)BalanceFrame.BalFX, (int)BalanceFrame.BalFY, (int)BalanceFrame.BalFH, (int)BalanceFrame.BalFL, (ConsoleColor)BalanceFrame.BalFFC, (ConsoleColor)BalanceFrame.BalFBC, BalanceFrame.Balance.ToString());
+        }
+        //--------------------------------------------------------
+        public void TabGo(int sel)
+        {
+            switch (sel)
+            {
+                case 0: //Reports
+                    Frame((char)ReportsFrame.RepFChar, (int)ReportsFrame.RepFX, (int)ReportsFrame.RepFY, (int)ReportsFrame.RepFH, (int)ReportsFrame.RepFL, (ConsoleColor)ReportsFrame.RepFFC, ConsoleColor.Gray, ReportsFrame.Reports.ToString());
+                    break;
+                case 1: //Transfer
+                    Frame((char)TransferFrame.TraFChar, (int)TransferFrame.TraFX, (int)TransferFrame.TraFY, (int)TransferFrame.TraFH, (int)TransferFrame.TraFL, (ConsoleColor)TransferFrame.TraFFC, ConsoleColor.Gray, TransferFrame.Transfer.ToString());
+                    break;
+                case 2: //Settings
+                    Frame((char)SettingsFrame.SetFChar, (int)SettingsFrame.SetFX, (int)SettingsFrame.SetFY, (int)SettingsFrame.SetFH, (int)SettingsFrame.SetFL, (ConsoleColor)SettingsFrame.SetFFC, ConsoleColor.Gray, SettingsFrame.Settings.ToString());
+                    break;
+                case 3: //Substract
+                    Frame((char)SubstractFrame.SubFChar, (int)SubstractFrame.SubFX, (int)SubstractFrame.SubFY, (int)SubstractFrame.SubFH, (int)SubstractFrame.SubFL, (ConsoleColor)SubstractFrame.SubFFC, ConsoleColor.Gray, SubstractFrame.Substract.ToString());
+                    break;
+                case 4: //Add
+                    Frame((char)AdditionFrame.AddFChar, (int)AdditionFrame.AddFX, (int)AdditionFrame.AddFY, (int)AdditionFrame.AddFH, (int)AdditionFrame.AddFL, (ConsoleColor)AdditionFrame.AddFFC, ConsoleColor.Gray, AdditionFrame.Addition.ToString());
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        //--------------------------------------------------------
+        public void Exit()
+        {
+            Frame(ExitFrame.ExFChar, ExitFrame.ExFX, ExitFrame.ExFY, ExitFrame.ExFH, ExitFrame.ExFL, ExitFrame.ExFFC, ExitFrame.ExFBC, ExitFrame.Quit.ToString(), ExitFrame.ExFNC);
         }
     }
 }
