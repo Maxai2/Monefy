@@ -8,11 +8,13 @@ namespace Monefy
 {
     class Application
     {
-        List<Category> Incomes;
-        List<Category> Outcomes;
-        List<Account> Accounts;
-        List<Category> Categories;
-        List<Subscription> Subscriptions;
+        List<Category> Incomes = new List<Category>();
+        List<Category> Outcomes = new List<Category>();
+        List<Account> Accounts = new List<Account>();
+        List<Category> Categories = new List<Category>();
+        List<Subscription> Subscriptions = new List<Subscription>();
+
+
     }
 }
 //--------------------------------------------------------

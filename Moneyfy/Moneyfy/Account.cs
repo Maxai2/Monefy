@@ -15,6 +15,14 @@ namespace Monefy
         public double Money { get; set; }
         public bool Hidden { get; set; }
 
+        public Account(string name, Currency cur, double money, bool hidden)
+        {
+            Name = name;
+            Cur = cur;
+            Money = money;
+            Hidden = hidden;
+        }
+
         public int CompareTo(object obj)
         {
             throw new NotImplementedException();

@@ -16,6 +16,11 @@ namespace Monefy
         public DateTime EndDate { get; set; }
         public SubscriptionType St { get; set; }
 
+        public Subscription()
+        {
+
+        }
+
         public int CompareTo(object obj)
         {
             throw new NotImplementedException();

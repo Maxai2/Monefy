@@ -40,10 +40,12 @@ namespace Monefy
                             goto NOTEXIT;
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.Gray;
-                        Console.SetCursorPosition(0, 35);
+                        Console.Clear();
                         Environment.Exit(0);
                         NOTEXIT:
-                        
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.Clear();
                         break;
                     default:
                         break;

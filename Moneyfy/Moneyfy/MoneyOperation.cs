@@ -13,6 +13,14 @@ namespace Monefy
         public string Note { get; set; }
         public DateTime Date { get; set; }
 
+        public MoneyOperation(double amount, Category cat, string note, DateTime date)
+        {
+            Amount = amount;
+            Cat = cat;
+            Note = note;
+            Date = date;
+        }
+
         public void WriteCSV()
         {
             throw new NotImplementedException();
