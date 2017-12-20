@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 //--------------------------------------------------------
 namespace Monefy
 {
-    enum SubscriptionType { Daily, Weekly, Monthly, Yearly }
+    public enum SubscriptionType { Daily, Weekly, Monthly, Yearly }
 
-    class Subscription : ICSVWritable, IConsoleWritable, IComparable
+    public class Subscription : ICSVWritable, IConsoleWritable, IComparable
     {
         public string Name { get; set; }
         public double Amount { get; set; }
@@ -16,9 +16,13 @@ namespace Monefy
         public DateTime EndDate { get; set; }
         public SubscriptionType St { get; set; }
 
-        public Subscription()
+        public Subscription(string name, double amount, DateTime startdate, DateTime enddate, SubscriptionType st)
         {
-
+            Name = name;
+            Amount = amount;
+            StartDate = startdate;
+            EndDate = enddate;
+            St = st;
         }
 
         public int CompareTo(object obj)

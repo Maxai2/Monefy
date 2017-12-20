@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 //--------------------------------------------------------
 namespace Monefy
 {
-    class Application
+    public class Application
     {
-        List<Category> Incomes = new List<Category>();
-        List<Category> Outcomes = new List<Category>();
-        List<Account> Accounts = new List<Account>();
-        List<Category> Categories = new List<Category>();
-        List<Subscription> Subscriptions = new List<Subscription>();
-
-
+        static public List<Category> Outcomes = new List<Category>();
+        static public List<Category> Incomes = new List<Category>();
+        static public List<Account> Accounts = new List<Account>();
+        static public List<Category> Categories = new List<Category>();
+        static public List<Subscription> Subscriptions = new List<Subscription>();
     }
 }
 //--------------------------------------------------------

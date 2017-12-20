@@ -37,7 +37,9 @@ namespace Monefy
             Console.ForegroundColor = ConsoleColor.Gray;
         }
         //--------------------------------------------------------
-        public void Frame(char type, int x, int y, int height, int length, ConsoleColor frameForCol, ConsoleColor frameBackCol = ConsoleColor.Black, string name = "", ConsoleColor nameCol = ConsoleColor.Cyan)
+        //public void Clear(int x, int y, int length, int )
+        //--------------------------------------------------------
+        public void Frame(char type, int x, int y, int height, int length, ConsoleColor frameForCol, ConsoleColor frameBackCol = ConsoleColor.Black, string name = "", ConsoleColor nameCol = ConsoleColor.Blue)
         {
             int count = 0;
 
@@ -132,188 +134,7 @@ namespace Monefy
 
         public enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 6, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")]Quit, ExFNC = ConsoleColor.Black }
 
-        public enum FoodParam           { FoodX = MainFrame.MFX + 15,           FoodY = MainFrame.MFY + 7,          FoodCol = ConsoleColor.Magenta              };
-        public enum HomeParam           { HomeX = MainFrame.MFX + 20,           HomeY = MainFrame.MFY + 7,          HomeCol = ConsoleColor.Blue                 };
-        public enum CafeParam           { CafeX = MainFrame.MFL - 15,           CafeY = MainFrame.MFY + 7,          CafeCol = ConsoleColor.Green                };
-        public enum HygieneParam        { HygieneX = MainFrame.MFL - 10,        HygieneY = MainFrame.MFY + 7,       HygieneCol = ConsoleColor.DarkBlue          };
-        public enum SportParam          { SportX = MainFrame.MFL - 10,          SportY = MainFrame.MFY + 9,         SportCol = ConsoleColor.Cyan                };
-        public enum HealthParam         { HealthX = MainFrame.MFL - 10,         HealthY = MainFrame.MFH - 11,       HealthCol = ConsoleColor.Red                };
-        public enum PhoneParam          { PhoneX = MainFrame.MFL - 10,          PhoneY = MainFrame.MFH - 9,         PhoneCol = ConsoleColor.White               };
-        public enum ClothesParam        { ClothesX = MainFrame.MFL - 15,        ClothesY = MainFrame.MFH - 9,       ClothesCol = ConsoleColor.DarkMagenta       };
-        public enum TaxiParam           { TaxiX = MainFrame.MFX + 20,           TaxiY = MainFrame.MFH - 9,          TaxiCol = ConsoleColor.Yellow               };
-        public enum EntertainmentParam  { EntertainmentX = MainFrame.MFX + 10,  EntertainmentY = MainFrame.MFH - 9, EntertainmentCol = ConsoleColor.DarkYellow  };
-        public enum TransportParam      { TransportX = MainFrame.MFX + 10,      TransportY = MainFrame.MFH - 11,    TransportCol = ConsoleColor.DarkRed         };
-        public enum CarParam            { CarX = MainFrame.MFX + 10,            CarY = MainFrame.MFY + 9,           CarCol = ConsoleColor.DarkGray              };
-
-        //public enum CategoryNameCoord
-        //{
-        //    FoodX           = MainFrame.MFX + 10, FoodY             = MainFrame.MFY + 5,    FoodCol             = ConsoleColor.Magenta,     // Food
-        //    HomeX           = MainFrame.MFX + 10, HomeY             = MainFrame.MFY + 5,    HomeCol             = ConsoleColor.Blue,        // Home
-        //    CafeX           = MainFrame.MFL - 15, CafeY             = MainFrame.MFY + 5,    CafeCol             = ConsoleColor.Green,       // Cafe
-        //    HygieneX        = MainFrame.MFL - 10, HygieneY          = MainFrame.MFY + 5,    HygieneCol          = ConsoleColor.DarkBlue,    // Hygiene
-        //    SportX          = MainFrame.MFL - 10, SportY            = MainFrame.MFY - 7,    SportCol            = ConsoleColor.Cyan,        // Sport
-        //    HealthX         = MainFrame.MFL - 10, HealthY           = MainFrame.MFH - 9,    HealthCol           = ConsoleColor.Red,         // Health
-        //    PhoneX          = MainFrame.MFL - 10, PhoneY            = MainFrame.MFH + 11,   PhoneCol            = ConsoleColor.White,       // Phone
-        //    ClothesX        = MainFrame.MFL - 15, ClothesY          = MainFrame.MFH + 11,   ClothesCol          = ConsoleColor.DarkMagenta, // Clothes
-        //    TaxiX           = MainFrame.MFX + 14, TaxiY             = MainFrame.MFH + 11,   TaxiCol             = ConsoleColor.Yellow,      // Taxi
-        //    EntertainmentX  = MainFrame.MFX + 10, EntertainmentY    = MainFrame.MFH + 11,   EntertainmentCol    = ConsoleColor.DarkYellow,  // Entertainment
-        //    TransportX      = MainFrame.MFX + 10, TransportY        = MainFrame.MFH + 9,    TransportCol        = ConsoleColor.DarkRed,     // Transport
-        //    CarX            = MainFrame.MFX + 10, CarY              = MainFrame.MFY + 7,    CarCol              = ConsoleColor.DarkGray     // Car
-        //}
-
-        //int CountOfCategoryNameCoord = 36;
-
-        //string[] CategName = { "FoodX",             "FoodY",            "FoodCol",
-        //                       "HomeX",             "HomeY",            "HomeCol",
-        //                       "CafeX",             "CafeY",            "CafeCol",
-        //                       "HygieneX",          "HygieneY",         "HygieneCol",
-        //                       "SportX",            "SportY",           "SportCol",
-        //                       "HealthX",           "HealthY",          "HealthCol",
-        //                       "PhoneX",            "PhoneY",           "PhoneCol",
-        //                       "ClothesX",          "ClothesY",         "ClothesCol",
-        //                       "TaxiX",             "TaxiY",            "TaxiCol",
-        //                       "EntertainmentX",    "EntertainmentY",   "EntertainmentCol",
-        //                       "TransportX",        "TransportY",       "TransportCol",
-        //                       "CarX",              "CarY",             "CarCol" };
-
-        string[] CategFirstName = { "Food", "Home", "Cafe", "Hygiene", "Sport", "Health", "Phone", "Clothes", "Taxi", "Entertainment", "Transport", "Car" };
-        //--------------------------------------------------------
-        void WriteName(int x, int y, int index, ConsoleColor col)
-        {
-            Console.SetCursorPosition(x, y);
-            Console.ForegroundColor = col;
-            Console.WriteLine(CategFirstName[index]);
-        }
-        //--------------------------------------------------------
-        public void CategoryName()
-        {
-            int x, y, index = 0;
-            ConsoleColor col;
-
-            x = (int)FoodParam.FoodX;
-            y = (int)FoodParam.FoodY;
-            col = (ConsoleColor)FoodParam.FoodCol;
-
-            WriteName(x, y, index, col);
-            index++;
-
-            x = (int)HomeParam.HomeX;
-            y = (int)HomeParam.HomeY;
-            col = (ConsoleColor)HomeParam.HomeCol;
-
-            WriteName(x, y, index, col);
-            index++;
-
-            x = (int)CafeParam.CafeX;
-            y = (int)CafeParam.CafeY;
-            col = (ConsoleColor)CafeParam.CafeCol;
-
-            WriteName(x, y, index, col);
-            index++;
-
-            x = (int)HygieneParam.HygieneX;
-            y = (int)HygieneParam.HygieneY;
-            col = (ConsoleColor)HygieneParam.HygieneCol;
-
-            WriteName(x, y, index, col);
-            index++;
-
-            x = (int)SportParam.SportX;
-            y = (int)SportParam.SportY;
-            col = (ConsoleColor)SportParam.SportCol;
-
-            WriteName(x, y, index, col);
-            index++;
-
-            x = (int)HealthParam.HealthX;
-            y = (int)HealthParam.HealthY;
-            col = (ConsoleColor)HealthParam.HealthCol;
-
-            WriteName(x, y, index, col);
-            index++;
-
-            x = (int)PhoneParam.PhoneX;
-            y = (int)PhoneParam.PhoneY;
-            col = (ConsoleColor)PhoneParam.PhoneCol;
-
-            WriteName(x, y, index, col);
-            index++;
-
-            x = (int)ClothesParam.ClothesX;
-            y = (int)ClothesParam.ClothesY;
-            col = (ConsoleColor)ClothesParam.ClothesCol;
-
-            WriteName(x, y, index, col);
-            index++;
-
-            x = (int)TaxiParam.TaxiX;
-            y = (int)TaxiParam.TaxiY;
-            col = (ConsoleColor)TaxiParam.TaxiCol;
-
-            WriteName(x, y, index, col);
-            index++;
-
-            x = (int)EntertainmentParam.EntertainmentX;
-            y = (int)EntertainmentParam.EntertainmentY;
-            col = (ConsoleColor)EntertainmentParam.EntertainmentCol;
-
-            WriteName(x, y, index, col);
-            index++;
-
-            x = (int)TransportParam.TransportX;
-            y = (int)TransportParam.TransportY;
-            col = (ConsoleColor)TransportParam.TransportCol;
-
-            WriteName(x, y, index, col);
-            index++;
-
-            x = (int)CarParam.CarX;
-            y = (int)CarParam.CarY;
-            col = (ConsoleColor)CarParam.CarCol;
-
-            WriteName(x, y, index, col);
-
-
-            //int x = 0, y = 0;
-            //ConsoleColor col = ConsoleColor.Black;
-            //int nameIndex = CategName.Length - 1;
-
-            //for (int i = CategFirstName.Length - 1; i >= 0; i--)
-            ////for (int i = 0; i < CategFirstName.Length; i++)
-            //{
-            //    int index = 0;
-
-            //    for (int k = nameIndex; k >= 0; k--)
-            //    //for (int j = nameIndex; j < CategName.Length; j++)
-            //    {
-            //        CategoryNameCoord param = (CategoryNameCoord)Enum.Parse(typeof(CategoryNameCoord), CategName[k].ToString());
-
-            //        switch (index)
-            //        {
-            //            case 0:
-            //                col = (ConsoleColor)param;
-            //                index++;
-            //                break;
-            //            case 1:
-            //                y = (int)param;
-            //                index++;
-            //                break;
-            //            case 2:
-            //                x = (int)param;
-            //                index++;
-            //                nameIndex = k - 1;
-            //                goto Exit;
-            //            default:
-            //                break;
-            //        }
-            //    }
-            //    Exit:
-
-            //    Console.SetCursorPosition(x, y);
-            //    Console.ForegroundColor = col;
-            //    Console.WriteLine(CategFirstName[i]);
-            //}
-        }
+        public enum CategoryFrame { CatFChar = 's', CatFX = MainFrame.MFX + 1, CatFY = MainFrame.MFY + 8, CatFH = 3, CatFL = 15, CatFFC = ConsoleColor.Gray, CatFBC = ConsoleColor.Black, [StringValue("")]Category }
         //--------------------------------------------------------
         public void TabGo(int sel)
         {
@@ -402,60 +223,14 @@ namespace Monefy
             }
         }
         //--------------------------------------------------------
-        public void puttext(int x, int y, int height, int length, char[] buffer)
+        public void CategFrame()
         {
-            Console.SetCursorPosition(x, y);
+            Frame((char)CategoryFrame.CatFChar, (int)CategoryFrame.CatFX, (int)CategoryFrame.CatFY, (int)CategoryFrame.CatFH + Application.Categories.Count, (int)CategoryFrame.CatFL, (ConsoleColor)CategoryFrame.CatFFC, (ConsoleColor)CategoryFrame.CatFBC, CategoryFrame.Category.ToString());
 
-            for (int i = 0; i < height; i++)
+            if (Application.Categories.Count != 0)
             {
-                for (int j = 0; j < length; j++)
-                {
-                    //Console.
-                }
+
             }
-
-        //    static void gettext(int x, int y, int height, int length, ref char[,] buffer)
-        //    {
-        //        Console.SetCursorPosition(x, y);
-
-        //        for (int i = 0; i < height; i++)
-        //        {
-        //            for (int j = 0; j < length; j++)
-        //            {
-        //            [DllImport("winmm.dll")]
-        //bool WINAPI ReadConsoleInput();
-        //buffer[i, j] = (char) Console.SetIn(;
-        //    }
-        //}
-        //        }
-
-        //        static void puttext(int x, int y, ref char[,] buffer)
-        //{
-        //    Console.SetCursorPosition(x, y);
-
-        //    foreach (var item in buffer)
-        //    {
-        //        Console.WriteLine(item);
-        //    }
-        //}
-
-        //static void Main(string[] args)
-        //{
-        //    for (int i = 0; i < 5; i++)
-        //    {
-        //        for (int j = 0; j < 5; j++)
-        //        {
-        //            Console.Write("*");
-        //        }
-        //        Console.WriteLine();
-        //    }
-
-        //    char[,] buffer = new char[2, 2];
-
-        //    gettext(0, 0, 2, 2, ref buffer);
-
-        //    puttext(0, 9, ref buffer);
-        //}
         }
         //--------------------------------------------------------
         public void DrawFrame()
@@ -507,8 +282,246 @@ namespace Monefy
             Frame((char)BalanceFrame.BalFChar, (int)BalanceFrame.BalFX, (int)BalanceFrame.BalFY, (int)BalanceFrame.BalFH, (int)BalanceFrame.BalFL, (ConsoleColor)BalanceFrame.BalFFC, (ConsoleColor)BalanceFrame.BalFBC, BalanceFrame.Balance.ToString());
 
             //  CategoryName
-            CategoryName();
+            CategFrame();
         }
     }
 }
 //--------------------------------------------------------
+        //public void puttext(int x, int y, int height, int length, char[] buffer)
+        //{
+        //    Console.SetCursorPosition(x, y);
+
+        //    for (int i = 0; i < height; i++)
+        //    {
+        //        for (int j = 0; j < length; j++)
+        //        {
+        //            //Console.
+        //        }
+        //    }
+
+        //    static void gettext(int x, int y, int height, int length, ref char[,] buffer)
+        //    {
+        //        Console.SetCursorPosition(x, y);
+
+        //        for (int i = 0; i < height; i++)
+        //        {
+        //            for (int j = 0; j < length; j++)
+        //            {
+        //            [DllImport("winmm.dll")]
+        //bool WINAPI ReadConsoleInput();
+        //buffer[i, j] = (char) Console.SetIn(;
+        //    }
+        //}
+        //        }
+
+        //        static void puttext(int x, int y, ref char[,] buffer)
+        //{
+        //    Console.SetCursorPosition(x, y);
+
+        //    foreach (var item in buffer)
+        //    {
+        //        Console.WriteLine(item);
+        //    }
+        //}
+
+        //static void Main(string[] args)
+        //{
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        for (int j = 0; j < 5; j++)
+        //        {
+        //            Console.Write("*");
+        //        }
+        //        Console.WriteLine();
+        //    }
+
+        //    char[,] buffer = new char[2, 2];
+
+        //    gettext(0, 0, 2, 2, ref buffer);
+
+        //    puttext(0, 9, ref buffer);
+        //}
+        //}
+        //public enum FoodParam           { FoodX = MainFrame.MFX + 15,           FoodY = MainFrame.MFY + 7,          FoodCol = ConsoleColor.Magenta              };
+        //public enum HomeParam           { HomeX = MainFrame.MFX + 20,           HomeY = MainFrame.MFY + 7,          HomeCol = ConsoleColor.Blue                 };
+        //public enum CafeParam           { CafeX = MainFrame.MFL - 15,           CafeY = MainFrame.MFY + 7,          CafeCol = ConsoleColor.Green                };
+        //public enum HygieneParam        { HygieneX = MainFrame.MFL - 10,        HygieneY = MainFrame.MFY + 7,       HygieneCol = ConsoleColor.DarkBlue          };
+        //public enum SportParam          { SportX = MainFrame.MFL - 10,          SportY = MainFrame.MFY + 9,         SportCol = ConsoleColor.Cyan                };
+        //public enum HealthParam         { HealthX = MainFrame.MFL - 10,         HealthY = MainFrame.MFH - 11,       HealthCol = ConsoleColor.Red                };
+        //public enum PhoneParam          { PhoneX = MainFrame.MFL - 10,          PhoneY = MainFrame.MFH - 9,         PhoneCol = ConsoleColor.White               };
+        //public enum ClothesParam        { ClothesX = MainFrame.MFL - 15,        ClothesY = MainFrame.MFH - 9,       ClothesCol = ConsoleColor.DarkMagenta       };
+        //public enum TaxiParam           { TaxiX = MainFrame.MFX + 20,           TaxiY = MainFrame.MFH - 9,          TaxiCol = ConsoleColor.Yellow               };
+        //public enum EntertainmentParam  { EntertainmentX = MainFrame.MFX + 10,  EntertainmentY = MainFrame.MFH - 9, EntertainmentCol = ConsoleColor.DarkYellow  };
+        //public enum TransportParam      { TransportX = MainFrame.MFX + 10,      TransportY = MainFrame.MFH - 11,    TransportCol = ConsoleColor.DarkRed         };
+        //public enum CarParam            { CarX = MainFrame.MFX + 10,            CarY = MainFrame.MFY + 9,           CarCol = ConsoleColor.DarkGray              };
+
+        //public enum CategoryNameCoord
+        //{
+        //    FoodX = MainFrame.MFX + 10, FoodY = MainFrame.MFY + 5, FoodCol = ConsoleColor.Magenta,     // Food
+        //    HomeX = MainFrame.MFX + 10, HomeY = MainFrame.MFY + 5, HomeCol = ConsoleColor.Blue,        // Home
+        //    CafeX = MainFrame.MFL - 15, CafeY = MainFrame.MFY + 5, CafeCol = ConsoleColor.Green,       // Cafe
+        //    HygieneX = MainFrame.MFL - 10, HygieneY = MainFrame.MFY + 5, HygieneCol = ConsoleColor.DarkBlue,    // Hygiene
+        //    SportX = MainFrame.MFL - 10, SportY = MainFrame.MFY - 7, SportCol = ConsoleColor.Cyan,        // Sport
+        //    HealthX = MainFrame.MFL - 10, HealthY = MainFrame.MFH - 9, HealthCol = ConsoleColor.Red,         // Health
+        //    PhoneX = MainFrame.MFL - 10, PhoneY = MainFrame.MFH + 11, PhoneCol = ConsoleColor.White,       // Phone
+        //    ClothesX = MainFrame.MFL - 15, ClothesY = MainFrame.MFH + 11, ClothesCol = ConsoleColor.DarkMagenta, // Clothes
+        //    TaxiX = MainFrame.MFX + 14, TaxiY = MainFrame.MFH + 11, TaxiCol = ConsoleColor.Yellow,      // Taxi
+        //    EntertainmentX = MainFrame.MFX + 10, EntertainmentY = MainFrame.MFH + 11, EntertainmentCol = ConsoleColor.DarkYellow,  // Entertainment
+        //    TransportX = MainFrame.MFX + 10, TransportY = MainFrame.MFH + 9, TransportCol = ConsoleColor.DarkRed,     // Transport
+        //    CarX = MainFrame.MFX + 10, CarY = MainFrame.MFY + 7, CarCol = ConsoleColor.DarkGray     // Car
+        //}
+
+        //int CountOfCategoryNameCoord = 36;
+
+        //string[] CategName = { "FoodX",             "FoodY",            "FoodCol",
+        //                       "HomeX",             "HomeY",            "HomeCol",
+        //                       "CafeX",             "CafeY",            "CafeCol",
+        //                       "HygieneX",          "HygieneY",         "HygieneCol",
+        //                       "SportX",            "SportY",           "SportCol",
+        //                       "HealthX",           "HealthY",          "HealthCol",
+        //                       "PhoneX",            "PhoneY",           "PhoneCol",
+        //                       "ClothesX",          "ClothesY",         "ClothesCol",
+        //                       "TaxiX",             "TaxiY",            "TaxiCol",
+        //                       "EntertainmentX",    "EntertainmentY",   "EntertainmentCol",
+        //                       "TransportX",        "TransportY",       "TransportCol",
+        //                       "CarX",              "CarY",             "CarCol" };
+
+        //string[] CategFirstName = { "Food", "Home", "Cafe", "Hygiene", "Sport", "Health", "Phone", "Clothes", "Taxi", "Entertainment", "Transport", "Car" };
+        //--------------------------------------------------------
+        //void WriteName(int x, int y, int index, ConsoleColor col)
+        //{
+        //    Console.SetCursorPosition(x, y);
+        //    Console.ForegroundColor = col;
+        //    Console.WriteLine(CategFirstName[index]);
+        //}
+        //--------------------------------------------------------
+        //public void CategoryName()
+        //{
+            //int x, y, index = 0;
+            //ConsoleColor col;
+
+            //x = (int)FoodParam.FoodX;
+            //y = (int)FoodParam.FoodY;
+            //col = (ConsoleColor)FoodParam.FoodCol;
+
+            //WriteName(x, y, index, col);
+            //index++;
+
+            //x = (int)HomeParam.HomeX;
+            //y = (int)HomeParam.HomeY;
+            //col = (ConsoleColor)HomeParam.HomeCol;
+
+            //WriteName(x, y, index, col);
+            //index++;
+
+            //x = (int)CafeParam.CafeX;
+            //y = (int)CafeParam.CafeY;
+            //col = (ConsoleColor)CafeParam.CafeCol;
+
+            //WriteName(x, y, index, col);
+            //index++;
+
+            //x = (int)HygieneParam.HygieneX;
+            //y = (int)HygieneParam.HygieneY;
+            //col = (ConsoleColor)HygieneParam.HygieneCol;
+
+            //WriteName(x, y, index, col);
+            //index++;
+
+            //x = (int)SportParam.SportX;
+            //y = (int)SportParam.SportY;
+            //col = (ConsoleColor)SportParam.SportCol;
+
+            //WriteName(x, y, index, col);
+            //index++;
+
+            //x = (int)HealthParam.HealthX;
+            //y = (int)HealthParam.HealthY;
+            //col = (ConsoleColor)HealthParam.HealthCol;
+
+            //WriteName(x, y, index, col);
+            //index++;
+
+            //x = (int)PhoneParam.PhoneX;
+            //y = (int)PhoneParam.PhoneY;
+            //col = (ConsoleColor)PhoneParam.PhoneCol;
+
+            //WriteName(x, y, index, col);
+            //index++;
+
+            //x = (int)ClothesParam.ClothesX;
+            //y = (int)ClothesParam.ClothesY;
+            //col = (ConsoleColor)ClothesParam.ClothesCol;
+
+            //WriteName(x, y, index, col);
+            //index++;
+
+            //x = (int)TaxiParam.TaxiX;
+            //y = (int)TaxiParam.TaxiY;
+            //col = (ConsoleColor)TaxiParam.TaxiCol;
+
+            //WriteName(x, y, index, col);
+            //index++;
+
+            //x = (int)EntertainmentParam.EntertainmentX;
+            //y = (int)EntertainmentParam.EntertainmentY;
+            //col = (ConsoleColor)EntertainmentParam.EntertainmentCol;
+
+            //WriteName(x, y, index, col);
+            //index++;
+
+            //x = (int)TransportParam.TransportX;
+            //y = (int)TransportParam.TransportY;
+            //col = (ConsoleColor)TransportParam.TransportCol;
+
+            //WriteName(x, y, index, col);
+            //index++;
+
+            //x = (int)CarParam.CarX;
+            //y = (int)CarParam.CarY;
+            //col = (ConsoleColor)CarParam.CarCol;
+
+            //WriteName(x, y, index, col);
+
+
+            //int x = 0, y = 0;
+            //ConsoleColor col = ConsoleColor.Black;
+            ////int nameIndex = CategName.Length - 1;
+            //int nameIndex = 0;
+
+            ////for (int i = CategFirstName.Length - 1; i >= 0; i--)
+            //for (int i = 0; i < CategFirstName.Length; i++)
+            //{
+            //    int index = 0;
+
+            //    //for (int k = nameIndex; k >= 0; k--)
+            //    for (int j = nameIndex; j < CategName.Length; j++)
+            //    {
+            //        CategoryNameCoord param = (CategoryNameCoord)Enum.Parse(typeof(CategoryNameCoord), CategName[j].ToString());
+
+            //        switch (index)
+            //        {
+            //            case 0:
+            //                col = (ConsoleColor)param;
+            //                index++;
+            //                break;
+            //            case 1:
+            //                y = (int)param;
+            //                index++;
+            //                break;
+            //            case 2:
+            //                x = (int)param;
+            //                index++;
+            //                nameIndex = j - 1;
+            //                goto Exit;
+            //            default:
+            //                break;
+            //        }
+            //    }
+            //    Exit:
+
+            //    Console.SetCursorPosition(x, y);
+            //    Console.ForegroundColor = col;
+            //    Console.WriteLine(CategFirstName[i]);
+            //}
+        //}

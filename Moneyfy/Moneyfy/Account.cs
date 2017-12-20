@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 //--------------------------------------------------------
 namespace Monefy
 {
-    enum Currency { AZN, RUB, EUR, USD }
+    public enum Currency { AZN, RUB, EUR, USD }
     
-    class Account : ICSVWritable, IConsoleWritable, IComparable
+    public class Account : ICSVWritable, IConsoleWritable, IComparable
     {
         public string Name { get; set; }
         public Currency Cur { get; set; }

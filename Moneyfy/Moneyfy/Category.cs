@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 //--------------------------------------------------------
 namespace Monefy
 {
-    enum Type
+    public enum Type
     {
         Income,
         Outcome
@@ -15,6 +15,13 @@ namespace Monefy
     public struct Category
     {
         string Name;
+        Type type;
+
+        public Category(string name, Type ty)
+        {
+            Name = name;
+            type = ty;
+        }
     }
 }
 //--------------------------------------------------------

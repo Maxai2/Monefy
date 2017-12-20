@@ -23,7 +23,7 @@ namespace Monefy
                 switch (key)
                 {
                     case ConsoleKey.Tab:
-                        //select < 5 ? select++ : select = 0;
+                        //select = select < 5 ? ++select : 0;
                         if (select < 4)
                             select++;
                         else
@@ -53,8 +53,6 @@ namespace Monefy
 
                 Functions.getInstance().DrawFrame();
             }
-
-
         }
     }
 }
