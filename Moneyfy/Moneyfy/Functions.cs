@@ -23,7 +23,7 @@ namespace Monefy
 
         char[] SingleLine = { (char)0x250C, (char)0x2500, (char)0x2510, (char)0x2502, (char)0x2514, (char)0x2500, (char)0x2518 };
         //--------------------------------------------------------
-        public void Line(int x, int y, int length, ConsoleColor LineCol, char symbol = '—')
+        private void Line(int x, int y, int length, ConsoleColor LineCol, char symbol = '—')
         {
             Console.ForegroundColor = LineCol;
 
@@ -38,12 +38,20 @@ namespace Monefy
             Console.ForegroundColor = ConsoleColor.Gray;
         }
         //--------------------------------------------------------
-        public void Clear(int x, int y, int length, int height)
+        private void Clear(int x, int y, int length, int height)
         {
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < length; j++)
+                {
+                    Console.SetCursorPosition(x + j, y + i);
 
+                    Console.Write(" ");
+                }
+            }
         }
         //--------------------------------------------------------
-        public void Frame(char type, int x, int y, int height, int length, ConsoleColor frameForCol, ConsoleColor frameBackCol = ConsoleColor.Black, string name = "", ConsoleColor nameCol = ConsoleColor.Red)
+        private void Frame(char type, int x, int y, int height, int length, ConsoleColor frameForCol, ConsoleColor frameBackCol = ConsoleColor.Black, string name = "", ConsoleColor nameCol = ConsoleColor.Red)
         {
             int count = 0;
 
@@ -122,23 +130,48 @@ namespace Monefy
             count++;
         }
         //--------------------------------------------------------
-        public enum MainFrame { MFChar = 'd', MFX = 15, MFY = 2, MFH = 30, MFL = 70, MFFC = ConsoleColor.Green, MFBC = ConsoleColor.Black, [StringValue("")]MONEFY, MFNC = ConsoleColor.Magenta }
+        private enum MainFrame { MFChar = 'd', MFX = 17, MFY = 2, MFH = 30, MFL = 70, MFFC = ConsoleColor.Green, MFBC = ConsoleColor.Black, [StringValue("")]MONEFY, MFNC = ConsoleColor.Magenta }
 
-        public enum ReportsFrame { RepFChar = 's', RepFX = MainFrame.MFX + 2, RepFY = MainFrame.MFY + 1, RepFH = 6, RepFL = 10, RepFFC = ConsoleColor.White, RepFBC = ConsoleColor.Black, [StringValue("")]Reports, RepFLL = 6, RepFLC = ConsoleColor.Red }
+        private enum ReportsFrame { RepFChar = 's', RepFX = MainFrame.MFX + 2, RepFY = MainFrame.MFY + 1, RepFH = 6, RepFL = 10, RepFFC = ConsoleColor.White, RepFBC = ConsoleColor.Black, [StringValue("")]Reports, RepFLL = 6, RepFLC = ConsoleColor.Red }
 
-        public enum TransferFrame { TraFChar = 's', TraFX = MainFrame.MFL - 10, TraFY = MainFrame.MFY + 1, TraFH = 6, TraFL = 11, TraFFC = ConsoleColor.White, TraFBC = ConsoleColor.Black, [StringValue("")]Transfer, TraFLL = 6, TraFLC = ConsoleColor.White }
+        private enum TransferFrame { TraFChar = 's', TraFX = MainFrame.MFL - 10, TraFY = MainFrame.MFY + 1, TraFH = 6, TraFL = 11, TraFFC = ConsoleColor.White, TraFBC = ConsoleColor.Black, [StringValue("")]Transfer, TraFLL = 6, TraFLC = ConsoleColor.White }
 
-        public enum SettingsFrame { SetFChar = 's', SetFX = MainFrame.MFL + 2, SetFY = MainFrame.MFY + 1, SetFH = 6, SetFL = 11, SetFFC = ConsoleColor.White, SetFBC = ConsoleColor.Black, [StringValue("")] Settings, SetFDC = ConsoleColor.White  }
+        private enum SettingsFrame { SetFChar = 's', SetFX = MainFrame.MFL + 2, SetFY = MainFrame.MFY + 1, SetFH = 6, SetFL = 11, SetFFC = ConsoleColor.White, SetFBC = ConsoleColor.Black, [StringValue("")] Settings, SetFDC = ConsoleColor.White  }
 
-        public enum SubstractFrame { SubFChar = 's', SubFX = MainFrame.MFX + 4, SubFY = MainFrame.MFH - 4, SubFH = 4, SubFL = 12, SubFFC = ConsoleColor.White, SubFBC = ConsoleColor.Black, [StringValue("")]Substract, SubFLL = 5, SubFLC = ConsoleColor.Yellow }
+        private enum SubstractFrame { SubFChar = 's', SubFX = MainFrame.MFX + 4, SubFY = MainFrame.MFH - 4, SubFH = 4, SubFL = 12, SubFFC = ConsoleColor.White, SubFBC = ConsoleColor.Black, [StringValue("")]Substract, SubFLL = 5, SubFLC = ConsoleColor.Yellow }
 
-        public enum AdditionFrame { AddFChar = 's', AddFX = MainFrame.MFL - 1, AddFY = MainFrame.MFH - 4, AddFH = 4, AddFL = 11, AddFFC = ConsoleColor.White, AddFBC = ConsoleColor.Black, [StringValue("")]Addition, AddFLL = 5, AddFLC = ConsoleColor.Yellow }
+        private enum AdditionFrame { AddFChar = 's', AddFX = MainFrame.MFL - 1, AddFY = MainFrame.MFH - 4, AddFH = 4, AddFL = 11, AddFFC = ConsoleColor.White, AddFBC = ConsoleColor.Black, [StringValue("")]Addition, AddFLL = 5, AddFLC = ConsoleColor.Yellow }
 
-        public enum BalanceFrame { BalFChar = 'd', BalFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2), BalFY = MainFrame.MFH - 6, BalFH = 7, BalFL = 17, BalFFC = ConsoleColor.DarkGreen, BalFBC = ConsoleColor.Black, [StringValue("")]Balance }
+        private enum BalanceFrame { BalFChar = 'd', BalFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2), BalFY = MainFrame.MFH - 6, BalFH = 7, BalFL = 17, BalFFC = ConsoleColor.DarkGreen, BalFBC = ConsoleColor.Black, [StringValue("")]Balance }
 
-        public enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 6, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")]Quit, ExFNC = ConsoleColor.Black }
+        private enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 6, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")]Quit, ExFNC = ConsoleColor.Black }
 
-        public enum DateParam { DateX = MainFrame.MFX + 25, DateY = MainFrame.MFY + 6, DateColF = ConsoleColor.Cyan };
+        private enum AddSubParam { ASChar = 's', ASX = MainFrame.MFX + 20, ASY = MainFrame.MFY + 8, ASH = 5, ASL = 10, }
+
+        private enum DateParam { DateX = MainFrame.MFX + 25, DateY = MainFrame.MFY + 6, DateColF = ConsoleColor.Cyan };
+
+        private List<ConsoleColor> CatNameCol = new List<ConsoleColor>();
+
+        public void AddCol()
+        {
+            foreach (ConsoleColor item in Enum.GetValues(typeof(ConsoleColor)))
+            {
+                if (item != ConsoleColor.Black)
+                    CatNameCol.Add(item);
+            }
+            //CatNameCol.Add(ConsoleColor.Magenta);
+            //CatNameCol.Add(ConsoleColor.Blue);
+            //CatNameCol.Add(ConsoleColor.Green);
+            //CatNameCol.Add(ConsoleColor.DarkBlue);
+            //CatNameCol.Add(ConsoleColor.Cyan);
+            //CatNameCol.Add(ConsoleColor.Red);
+            //CatNameCol.Add(ConsoleColor.White);
+            //CatNameCol.Add(ConsoleColor.DarkMagenta);
+            //CatNameCol.Add(ConsoleColor.Yellow);
+            //CatNameCol.Add(ConsoleColor.DarkYellow);
+            //CatNameCol.Add(ConsoleColor.DarkRed);
+            //CatNameCol.Add(ConsoleColor.DarkGray);
+        }
 
         string[] CategName = { "Food", "Home", "Cafe", "Hygiene", "Sport", "Health", "Phone", "Clothes", "Taxi", "Entertainment", "Transport", "Car" };
         //--------------------------------------------------------
@@ -164,6 +197,136 @@ namespace Monefy
 
                 default:
                     break;
+            }
+        }
+        //--------------------------------------------------------
+        private string MonthToString(int month)
+        {
+            switch (month)
+            {
+                case 1:
+                    return "January";
+                case 2:
+                    return "February";
+                case 3:
+                    return "March";
+                case 4:
+                    return "April";
+                case 5:
+                    return "May";
+                case 6:
+                    return "June";
+                case 7:
+                    return "July";
+                case 8:
+                    return "August";
+                case 9:
+                    return "September";
+                case 10:
+                    return "October";
+                case 11:
+                    return "November";
+                case 12:
+                    return "December";
+                default:
+                    return null;
+            }
+        }
+        //--------------------------------------------------------
+        private DateTime[] WeekBeginEnd(DateTime date)
+        {
+            DateTime[] BSDate = new DateTime[2];
+            DateTime temp = date;
+
+            while (temp.DayOfWeek != DayOfWeek.Monday)
+            {
+                temp = temp.AddDays(-1);
+            }
+            BSDate[0] = temp;
+            temp = date;
+
+            while (temp.DayOfWeek != DayOfWeek.Sunday)
+            {
+                temp = temp.AddDays(1);
+            }
+            BSDate[1] = temp;
+
+            return BSDate;
+        }
+        //--------------------------------------------------------
+        private void Date()
+        {
+            Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY);
+            Console.ForegroundColor = (ConsoleColor)DateParam.DateColF;
+            Console.Write($"{DateTime.Today.DayOfWeek}, {DateTime.Today.Day} {MonthToString(DateTime.Today.Month)}");
+
+            //Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY + 1);
+            //Console.WriteLine($"{WeekBeginEnd(DateTime.Today)[0].Day} - {WeekBeginEnd(DateTime.Today)[1].Day} {MonthToString(DateTime.Today.Month)}");
+
+            //Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY + 2);
+            //Console.WriteLine($"{MonthToString(DateTime.Today.Month)}");
+
+            //Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY + 3);
+            //Console.WriteLine($"{DateTime.Today.Year}");
+        }
+        //--------------------------------------------------------
+        private void CategWrite()
+        {
+            int index = 0;
+
+            int count = Application.Categories.Count;
+
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            while (count != 0)
+            {
+                Console.SetCursorPosition((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 8 + index);
+                if (index < 9)
+                    Console.Write(" ");
+                else
+                    Console.Write("");
+                Console.WriteLine($"{index + 1}) {Application.Categories[index].Name}");
+                index++;
+                count--;
+            }
+        }
+        //--------------------------------------------------------
+        public void TemplateCatName()
+        {
+            for (int i = 0; i < CategName.Length; i++)
+                Application.getInstance().AddCategories(CategName[i], Type.Income);
+        }
+        //--------------------------------------------------------
+        //public void CatNameStatusLine(double food, double home, double cafe, double hygiene, double sport, double health, double phone, double clothes, double taxi, double entertainment, double transport, double car)
+        private void CatNameStatusLine(params double[] cats)
+        {
+            double[] CatValue = new double[Application.Categories.Count];
+            for (int i = 0; i < cats.Length; i++)
+            {
+                CatValue[i] = cats[i];
+            }
+            //CatValue[0] = food;
+            //CatValue[1] = home;
+            //CatValue[2] = cafe;
+            //CatValue[3] = hygiene;
+            //CatValue[4] = sport;
+            //CatValue[5] = health;
+            //CatValue[6] = phone;
+            //CatValue[7] = clothes;
+            //CatValue[8] = taxi;
+            //CatValue[9] = entertainment;
+            //CatValue[10] = transport;
+            //CatValue[11] = car;
+
+            for (int i = 0; i < Application.Categories.Count; i++)
+            {
+                Console.SetCursorPosition((int)MainFrame.MFX + 20, (int)MainFrame.MFY + 8 + i);
+
+                Console.ForegroundColor = CatNameCol[i];
+                for (int j = 0; j < CatValue[i] / 5; j++)
+                    Console.Write((char)0x2593);
+                Console.ForegroundColor = ConsoleColor.Gray;
+
+                Console.Write($" {CatValue[i]}%");
             }
         }
         //--------------------------------------------------------
@@ -229,101 +392,31 @@ namespace Monefy
             }
         }
         //--------------------------------------------------------
-        public string MonthToString(int month)
+        public void ReportWindow()
         {
-            switch (month)
-            {
-                case 1:
-                    return "January";
-                case 2:
-                    return "February";
-                case 3:
-                    return "March";
-                case 4:
-                    return "April";
-                case 5:
-                    return "May";
-                case 6:
-                    return "June";
-                case 7:
-                    return "July";
-                case 8:
-                    return "August";
-                case 9:
-                    return "September";
-                case 10:
-                    return "October";
-                case 11:
-                    return "November";
-                case 12:
-                    return "December";
-                default:
-                    return null;
-            }
+            Frame((char)ReportsFrame.RepFChar, (int)MainFrame.MFX, (int)MainFrame.MFY, (int)MainFrame.MFH, (int)ReportsFrame.RepFL + 2, (ConsoleColor)ReportsFrame.RepFFC, (ConsoleColor)ReportsFrame.RepFBC, ReportsFrame.Reports.ToString());
+
+            Clear((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 1, (int)ReportsFrame.RepFL, (int)MainFrame.MFH - 3);
+
+            Console.Read();
         }
         //--------------------------------------------------------
-        public DateTime[] WeekBeginEnd(DateTime date)
+        public void SettingsWindow()
         {
-            DateTime[] BSDate = new DateTime[2];
-            DateTime temp = date;
+            Frame((char)SettingsFrame.SetFChar, (int)SettingsFrame.SetFX, (int)MainFrame.MFY, (int)MainFrame.MFH, (int)SettingsFrame.SetFL + 4, (ConsoleColor)SettingsFrame.SetFFC, (ConsoleColor)SettingsFrame.SetFBC, SettingsFrame.Settings.ToString());
 
-            while (temp.DayOfWeek != DayOfWeek.Monday)
-            {
-                temp = temp.AddDays(-1);
-            }
-            BSDate[0] = temp;
-            temp = date;
+            Clear((int)SettingsFrame.SetFX + 1, (int)MainFrame.MFY + 1, (int)SettingsFrame.SetFL + 2, (int)MainFrame.MFH - 3);
 
-            while (temp.DayOfWeek != DayOfWeek.Sunday)
-            {
-                temp = temp.AddDays(1);
-            }
-            BSDate[1] = temp;
-
-            return BSDate;
+            Console.Read();
         }
         //--------------------------------------------------------
-        public void Date()
+        public void AddSubWindow()
         {
-            Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY);
-            Console.ForegroundColor = (ConsoleColor)DateParam.DateColF;
+            Frame((char)SettingsFrame.SetFChar, (int)SettingsFrame.SetFX, (int)MainFrame.MFY, (int)MainFrame.MFH, (int)SettingsFrame.SetFL + 4, (ConsoleColor)SettingsFrame.SetFFC, (ConsoleColor)SettingsFrame.SetFBC, SettingsFrame.Settings.ToString());
 
-            Console.Write($"{DateTime.Today.DayOfWeek}, {DateTime.Today.Day} {MonthToString(DateTime.Today.Month)}");
+            Clear((int)SettingsFrame.SetFX + 1, (int)MainFrame.MFY + 1, (int)SettingsFrame.SetFL + 2, (int)MainFrame.MFH - 3);
 
-            //Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY + 1);
-            //Console.WriteLine($"{WeekBeginEnd(DateTime.Today)[0].Day} - {WeekBeginEnd(DateTime.Today)[1].Day} {MonthToString(DateTime.Today.Month)}");
-
-            //Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY + 2);
-            //Console.WriteLine($"{MonthToString(DateTime.Today.Month)}");
-
-            //Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY + 3);
-            //Console.WriteLine($"{DateTime.Today.Year}");
-        }
-        //--------------------------------------------------------
-        public void CategWrite()
-        {
-            int index = 0;
-
-            int count = Application.Categories.Count;
-
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            while (count != 0)
-            {
-                Console.SetCursorPosition((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 7 + index);
-                if (index < 9)
-                    Console.Write(" ");
-                else
-                    Console.Write("");
-                Console.WriteLine($"{index + 1}) {Application.Categories[index].Name}");
-                index++;
-                count--;
-            }
-        }
-        //--------------------------------------------------------
-        public void TemplateCatName()
-        {
-            for (int i = 0; i < CategName.Length; i++)
-                Application.getInstance().AddCategories(CategName[i], Type.Income);
+            Console.Read();
         }
         //--------------------------------------------------------
         public void DrawFrame()
@@ -377,8 +470,10 @@ namespace Monefy
             //Date
             Date();
 
-            //  CategoryName
+            //CategoryName
             CategWrite();
+
+            CatNameStatusLine(100, 50, 5, 67, 34, 56, 34, 2, 4, 6, 23, 5);
         }
     }
 }

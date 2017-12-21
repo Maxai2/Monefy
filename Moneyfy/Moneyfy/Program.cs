@@ -12,6 +12,9 @@ namespace Monefy
         {
             Functions.getInstance().TemplateCatName();
             Console.CursorVisible = false;
+            Functions.getInstance().AddCol();
+            //Functions.getInstance().CatNameStatusLine(100, 50, 5, 67, 34, 56, 34, 2, 4, 6, 23, 5);
+
             Functions.getInstance().DrawFrame();
             int select = 0;
 
@@ -34,7 +37,14 @@ namespace Monefy
                     case ConsoleKey.Enter:
                         if (select == 0)
                         {
-
+                            Functions.getInstance().ReportWindow();
+                            Console.Clear();
+                        }
+                        else
+                        if (select == 2)
+                        {
+                            Functions.getInstance().SettingsWindow();
+                            Console.Clear();
                         }
                         break;
                     case ConsoleKey.F10:
