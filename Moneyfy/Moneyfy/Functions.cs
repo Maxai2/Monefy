@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //--------------------------------------------------------
 namespace Monefy
 {
-    class Functions
+    public class Functions
     {
         private static Functions instance;
 
@@ -37,9 +38,12 @@ namespace Monefy
             Console.ForegroundColor = ConsoleColor.Gray;
         }
         //--------------------------------------------------------
-        //public void Clear(int x, int y, int length, int )
+        public void Clear(int x, int y, int length, int height)
+        {
+
+        }
         //--------------------------------------------------------
-        public void Frame(char type, int x, int y, int height, int length, ConsoleColor frameForCol, ConsoleColor frameBackCol = ConsoleColor.Black, string name = "", ConsoleColor nameCol = ConsoleColor.Blue)
+        public void Frame(char type, int x, int y, int height, int length, ConsoleColor frameForCol, ConsoleColor frameBackCol = ConsoleColor.Black, string name = "", ConsoleColor nameCol = ConsoleColor.Red)
         {
             int count = 0;
 
@@ -134,7 +138,9 @@ namespace Monefy
 
         public enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 6, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")]Quit, ExFNC = ConsoleColor.Black }
 
-        public enum CategoryFrame { CatFChar = 's', CatFX = MainFrame.MFX + 1, CatFY = MainFrame.MFY + 8, CatFH = 3, CatFL = 15, CatFFC = ConsoleColor.Gray, CatFBC = ConsoleColor.Black, [StringValue("")]Category }
+        public enum DateParam { DateX = MainFrame.MFX + 25, DateY = MainFrame.MFY + 6, DateColF = ConsoleColor.Cyan };
+
+        string[] CategName = { "Food", "Home", "Cafe", "Hygiene", "Sport", "Health", "Phone", "Clothes", "Taxi", "Entertainment", "Transport", "Car" };
         //--------------------------------------------------------
         public void TabGo(int sel)
         {
@@ -223,14 +229,101 @@ namespace Monefy
             }
         }
         //--------------------------------------------------------
-        public void CategFrame()
+        public string MonthToString(int month)
         {
-            Frame((char)CategoryFrame.CatFChar, (int)CategoryFrame.CatFX, (int)CategoryFrame.CatFY, (int)CategoryFrame.CatFH + Application.Categories.Count, (int)CategoryFrame.CatFL, (ConsoleColor)CategoryFrame.CatFFC, (ConsoleColor)CategoryFrame.CatFBC, CategoryFrame.Category.ToString());
-
-            if (Application.Categories.Count != 0)
+            switch (month)
             {
-
+                case 1:
+                    return "January";
+                case 2:
+                    return "February";
+                case 3:
+                    return "March";
+                case 4:
+                    return "April";
+                case 5:
+                    return "May";
+                case 6:
+                    return "June";
+                case 7:
+                    return "July";
+                case 8:
+                    return "August";
+                case 9:
+                    return "September";
+                case 10:
+                    return "October";
+                case 11:
+                    return "November";
+                case 12:
+                    return "December";
+                default:
+                    return null;
             }
+        }
+        //--------------------------------------------------------
+        public DateTime[] WeekBeginEnd(DateTime date)
+        {
+            DateTime[] BSDate = new DateTime[2];
+            DateTime temp = date;
+
+            while (temp.DayOfWeek != DayOfWeek.Monday)
+            {
+                temp = temp.AddDays(-1);
+            }
+            BSDate[0] = temp;
+            temp = date;
+
+            while (temp.DayOfWeek != DayOfWeek.Sunday)
+            {
+                temp = temp.AddDays(1);
+            }
+            BSDate[1] = temp;
+
+            return BSDate;
+        }
+        //--------------------------------------------------------
+        public void Date()
+        {
+            Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY);
+            Console.ForegroundColor = (ConsoleColor)DateParam.DateColF;
+
+            Console.Write($"{DateTime.Today.DayOfWeek}, {DateTime.Today.Day} {MonthToString(DateTime.Today.Month)}");
+
+            //Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY + 1);
+            //Console.WriteLine($"{WeekBeginEnd(DateTime.Today)[0].Day} - {WeekBeginEnd(DateTime.Today)[1].Day} {MonthToString(DateTime.Today.Month)}");
+
+            //Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY + 2);
+            //Console.WriteLine($"{MonthToString(DateTime.Today.Month)}");
+
+            //Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY + 3);
+            //Console.WriteLine($"{DateTime.Today.Year}");
+        }
+        //--------------------------------------------------------
+        public void CategWrite()
+        {
+            int index = 0;
+
+            int count = Application.Categories.Count;
+
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            while (count != 0)
+            {
+                Console.SetCursorPosition((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 7 + index);
+                if (index < 9)
+                    Console.Write(" ");
+                else
+                    Console.Write("");
+                Console.WriteLine($"{index + 1}) {Application.Categories[index].Name}");
+                index++;
+                count--;
+            }
+        }
+        //--------------------------------------------------------
+        public void TemplateCatName()
+        {
+            for (int i = 0; i < CategName.Length; i++)
+                Application.getInstance().AddCategories(CategName[i], Type.Income);
         }
         //--------------------------------------------------------
         public void DrawFrame()
@@ -281,8 +374,11 @@ namespace Monefy
             //Balance Frame
             Frame((char)BalanceFrame.BalFChar, (int)BalanceFrame.BalFX, (int)BalanceFrame.BalFY, (int)BalanceFrame.BalFH, (int)BalanceFrame.BalFL, (ConsoleColor)BalanceFrame.BalFFC, (ConsoleColor)BalanceFrame.BalFBC, BalanceFrame.Balance.ToString());
 
+            //Date
+            Date();
+
             //  CategoryName
-            CategFrame();
+            CategWrite();
         }
     }
 }
@@ -386,7 +482,6 @@ namespace Monefy
         //                       "TransportX",        "TransportY",       "TransportCol",
         //                       "CarX",              "CarY",             "CarCol" };
 
-        //string[] CategFirstName = { "Food", "Home", "Cafe", "Hygiene", "Sport", "Health", "Phone", "Clothes", "Taxi", "Entertainment", "Transport", "Car" };
         //--------------------------------------------------------
         //void WriteName(int x, int y, int index, ConsoleColor col)
         //{

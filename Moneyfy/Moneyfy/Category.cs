@@ -14,8 +14,8 @@ namespace Monefy
 
     public struct Category
     {
-        string Name;
-        Type type;
+        public string Name { get; set; }
+        public Type type { get; set; }
 
         public Category(string name, Type ty)
         {

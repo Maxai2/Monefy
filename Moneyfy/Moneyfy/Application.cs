@@ -8,11 +8,30 @@ namespace Monefy
 {
     public class Application
     {
+        private static Application instance;
+
+        public static Application getInstance()
+        {
+            if (instance == null)
+                instance = new Application();
+
+            return instance;
+        }
+
         static public List<Category> Outcomes = new List<Category>();
         static public List<Category> Incomes = new List<Category>();
         static public List<Account> Accounts = new List<Account>();
         static public List<Category> Categories = new List<Category>();
         static public List<Subscription> Subscriptions = new List<Subscription>();
+
+        public void AddCategories(string name, Type ty)
+        {
+            Category temp = new Category(name, ty);
+
+            Categories.Add(temp);
+        }
+
+        
     }
 }
 //--------------------------------------------------------
