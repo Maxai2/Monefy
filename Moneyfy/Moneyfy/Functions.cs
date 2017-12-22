@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 //--------------------------------------------------------
 namespace Monefy
 {
@@ -130,7 +131,7 @@ namespace Monefy
             count++;
         }
         //--------------------------------------------------------
-        private enum MainFrame { MFChar = 'd', MFX = 17, MFY = 2, MFH = 30, MFL = 70, MFFC = ConsoleColor.Green, MFBC = ConsoleColor.Black, [StringValue("")]MONEFY, MFNC = ConsoleColor.Magenta }
+        private enum MainFrame { MFChar = 'd', MFX = 17, MFY = 2, MFH = 30, MFL = 80, MFFC = ConsoleColor.Green, MFBC = ConsoleColor.Black, [StringValue("")]MONEFY, MFNC = ConsoleColor.Magenta }
 
         private enum ReportsFrame { RepFChar = 's', RepFX = MainFrame.MFX + 2, RepFY = MainFrame.MFY + 1, RepFH = 6, RepFL = 10, RepFFC = ConsoleColor.White, RepFBC = ConsoleColor.Black, [StringValue("")]Reports, RepFLL = 6, RepFLC = ConsoleColor.Red }
 
@@ -146,12 +147,20 @@ namespace Monefy
 
         private enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 6, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")]Quit, ExFNC = ConsoleColor.Black }
 
-        private enum AddSubParam { ASChar = 's', ASX = MainFrame.MFX + 20, ASY = MainFrame.MFY + 8, ASH = 5, ASL = 10, }
+        private enum AddSubParam { ASChar = 's', ASX = MainFrame.MFX + 20, ASY = MainFrame.MFY + 8, ASH = 14, ASL = 30, ASFC = ConsoleColor.Gray, ASBC = ConsoleColor.Black, [StringValue("")]Addition, [StringValue("")]Substract, ASNC = ConsoleColor.Gray }
 
         private enum DateParam { DateX = MainFrame.MFX + 25, DateY = MainFrame.MFY + 6, DateColF = ConsoleColor.Cyan };
 
         private List<ConsoleColor> CatNameCol = new List<ConsoleColor>();
 
+        string[] CategName = { "Food", "Home", "Cafe", "Hygiene", "Sport", "Health", "Phone", "Clothes", "Taxi", "Entertainment", "Transport", "Car" };
+
+        string[] ReportsMenuName = { "Change Account", "Date change", "Transaction to txt", "Export to CSV" };
+
+        string[] SettingsMenuName = { "Redact Category", "Redact Account", "Change Language", "Add/Change Money Limit", "Add/Change Subscription" };
+
+        private int x = 0, y = 0, select = 0;
+        //--------------------------------------------------------
         public void AddCol()
         {
             foreach (ConsoleColor item in Enum.GetValues(typeof(ConsoleColor)))
@@ -172,8 +181,59 @@ namespace Monefy
             //CatNameCol.Add(ConsoleColor.DarkRed);
             //CatNameCol.Add(ConsoleColor.DarkGray);
         }
+        //--------------------------------------------------------
+        public void Menu(int x, int y, ref int select, string[] arr)
+        {
+            CONTI:
+            for (int i = 0; i < arr.Length; i++)
+            {
+                Console.SetCursorPosition(x, y + i);
 
-        string[] CategName = { "Food", "Home", "Cafe", "Hygiene", "Sport", "Health", "Phone", "Clothes", "Taxi", "Entertainment", "Transport", "Car" };
+                if (i == select)
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                else
+                    Console.ForegroundColor = ConsoleColor.Gray;
+
+                Console.WriteLine(arr[i]);
+            }
+
+            int temp = MenuGo(ref select, arr);
+
+            if (temp != -1)
+            {
+                select = temp;
+                goto CONTI;
+            }
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+        //--------------------------------------------------------
+        public int MenuGo(ref int select, string[] arr)
+        {
+            var key = Console.ReadKey(true).Key;
+
+            switch (key)
+            {
+                case ConsoleKey.DownArrow:
+                    if (select < arr.Length - 1)
+                        select++;
+                    return select;
+                case ConsoleKey.UpArrow:
+                    if (select > 0)
+                        select--;
+                    return select;
+                case ConsoleKey.RightArrow:
+                    select = arr.Length - 1;
+                    return select;
+                case ConsoleKey.LeftArrow:
+                    select = 0;
+                    return select;
+                case ConsoleKey.Escape:
+                    return -1;
+            }
+
+            return -2;
+        }
         //--------------------------------------------------------
         public void TabGo(int sel)
         {
@@ -319,7 +379,7 @@ namespace Monefy
 
             for (int i = 0; i < Application.Categories.Count; i++)
             {
-                Console.SetCursorPosition((int)MainFrame.MFX + 20, (int)MainFrame.MFY + 8 + i);
+                Console.SetCursorPosition((int)MainFrame.MFX + 23, (int)MainFrame.MFY + 8 + i);
 
                 Console.ForegroundColor = CatNameCol[i];
                 for (int j = 0; j < CatValue[i] / 5; j++)
@@ -394,29 +454,39 @@ namespace Monefy
         //--------------------------------------------------------
         public void ReportWindow()
         {
-            Frame((char)ReportsFrame.RepFChar, (int)MainFrame.MFX, (int)MainFrame.MFY, (int)MainFrame.MFH, (int)ReportsFrame.RepFL + 2, (ConsoleColor)ReportsFrame.RepFFC, (ConsoleColor)ReportsFrame.RepFBC, ReportsFrame.Reports.ToString());
+            Frame((char)ReportsFrame.RepFChar, (int)MainFrame.MFX, (int)MainFrame.MFY, (int)MainFrame.MFH, (int)ReportsFrame.RepFL + 11, (ConsoleColor)ReportsFrame.RepFFC, (ConsoleColor)ReportsFrame.RepFBC, ReportsFrame.Reports.ToString());
 
-            Clear((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 1, (int)ReportsFrame.RepFL, (int)MainFrame.MFH - 3);
+            Clear((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 1, (int)ReportsFrame.RepFL + 9, (int)MainFrame.MFH - 3);
 
-            Console.Read();
+            x = (int)MainFrame.MFX + 1;
+            y = (int)MainFrame.MFY + 2;
+
+            Menu(x, y, ref select, ReportsMenuName);
+            select = 0;
         }
         //--------------------------------------------------------
         public void SettingsWindow()
         {
-            Frame((char)SettingsFrame.SetFChar, (int)SettingsFrame.SetFX, (int)MainFrame.MFY, (int)MainFrame.MFH, (int)SettingsFrame.SetFL + 4, (ConsoleColor)SettingsFrame.SetFFC, (ConsoleColor)SettingsFrame.SetFBC, SettingsFrame.Settings.ToString());
+            Frame((char)SettingsFrame.SetFChar, (int)TransferFrame.TraFX, (int)MainFrame.MFY, (int)MainFrame.MFH, (int)TransferFrame.TraFL + (int)SettingsFrame.SetFL + 5, (ConsoleColor)SettingsFrame.SetFFC, (ConsoleColor)SettingsFrame.SetFBC, SettingsFrame.Settings.ToString());
 
-            Clear((int)SettingsFrame.SetFX + 1, (int)MainFrame.MFY + 1, (int)SettingsFrame.SetFL + 2, (int)MainFrame.MFH - 3);
+            Clear((int)TransferFrame.TraFX + 1, (int)MainFrame.MFY + 1, (int)TransferFrame.TraFL + (int)SettingsFrame.SetFL + 2, (int)MainFrame.MFH - 3);
 
-            Console.Read();
+            x = (int)TransferFrame.TraFX + 1;
+            y = (int)MainFrame.MFY + 2;
+
+            Menu(x, y, ref select, SettingsMenuName);
+            select = 0;
         }
         //--------------------------------------------------------
-        public void AddSubWindow()
+        public void AddSubWindow(char type)
         {
-            Frame((char)SettingsFrame.SetFChar, (int)SettingsFrame.SetFX, (int)MainFrame.MFY, (int)MainFrame.MFH, (int)SettingsFrame.SetFL + 4, (ConsoleColor)SettingsFrame.SetFFC, (ConsoleColor)SettingsFrame.SetFBC, SettingsFrame.Settings.ToString());
+            Frame((char)AddSubParam.ASChar, (int)AddSubParam.ASX, (int)AddSubParam.ASY, (int)AddSubParam.ASH, (int)AddSubParam.ASL, (ConsoleColor)AddSubParam.ASFC, (ConsoleColor)AddSubParam.ASBC, type == 'a' ? AddSubParam.Addition.ToString() : AddSubParam.Substract.ToString(), (ConsoleColor)AddSubParam.ASNC);
 
-            Clear((int)SettingsFrame.SetFX + 1, (int)MainFrame.MFY + 1, (int)SettingsFrame.SetFL + 2, (int)MainFrame.MFH - 3);
+            Clear((int)AddSubParam.ASX + 1, (int)AddSubParam.ASY + 1, (int)AddSubParam.ASL - 2, (int)AddSubParam.ASH - 3);
 
-            Console.Read();
+
+
+            Console.ReadKey();
         }
         //--------------------------------------------------------
         public void DrawFrame()

@@ -1,0 +1,76 @@
+//Events
+//RunOutOfMoney
+//Subscription
+
+////Classes & Interfaces
+//ICSVWritable +
+//    Write()
+
+//IConsoleWritable +
+//    Write()
+
+//MoneyOperation : ICSVWritable, IConsoleWritable, IComparable + 
+//    Amount
+//    Category
+//    Note
+//    Date
+
+//Category + 
+//    Name
+//    Type (Income \ Outcome)
+
+//Subscription : ICSVWritable, IConsoleWritable, IComparable +
+//    Name
+//    Amount
+//    StartDate
+//    EndDate
+//    SubscriptionType
+
+//SubscriptionType { Daily, Weekly, Monthly, Yearly } +
+
+//Account : ICSVWritable, IConsoleWritable, IComparable +
+//    Name
+//    Currency
+//    Money
+//    Hidden
+
+//Application + 
+//    Incomes[]
+//    Outcomes[]
+//    Accounts[]
+//    Categories[]
+//    Subscriptions[]
+
+//class Data
+//Sorted incomes list (by category, by note, by date)
+//Sorted outcomes list (by category, by note, by date)
+
+//class FileManager
+//    CSV
+//    Data
+//    Settings
+//    Languages
+//    Currencies
+
+//static class Settings
+//    Currency
+//    Language
+//    ...
+
+//Don't touch
+//struct Language
+//    Name
+//    File
+
+//Text
+//    Language
+//    [phrase]
+
+//Text["balance"]
+//Text["income"]
+//Text["outcome"]
+
+//"csv_export"  "Export to CSV" "Ёкспорт в CSV"
+//Save data to encrypted binary file
+//Save settings to the XML
+//Currencies from XML

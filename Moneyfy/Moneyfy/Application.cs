@@ -31,7 +31,12 @@ namespace Monefy
             Categories.Add(temp);
         }
 
-        
+        public void AddAccount(string name, Currency cur, double money, bool hidden)
+        {
+            Account temp = new Account(name, cur, money, hidden);
+
+            Accounts.Add(temp);
+        }
     }
 }
 //--------------------------------------------------------

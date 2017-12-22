@@ -35,16 +35,23 @@ namespace Monefy
                             select = 0;
                         break;
                     case ConsoleKey.Enter:
-                        if (select == 0)
+                        switch (select)
                         {
-                            Functions.getInstance().ReportWindow();
-                            Console.Clear();
-                        }
-                        else
-                        if (select == 2)
-                        {
-                            Functions.getInstance().SettingsWindow();
-                            Console.Clear();
+                            case 0:
+                                Functions.getInstance().ReportWindow();
+                                Console.Clear();
+                                break;
+                            case 2:
+                                Functions.getInstance().SettingsWindow();
+                                Console.Clear();
+                                break;
+                            case 3:
+                            case 4:
+                                Functions.getInstance().AddSubWindow(select == 3 ? 's' : 'a');
+                                Console.Clear();
+                                break;
+                            default:
+                                break;
                         }
                         break;
                     case ConsoleKey.F10:
