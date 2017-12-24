@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 //--------------------------------------------------------
 namespace Monefy
-{
+{ 
     public class Functions
     {
+        [DllImport("Bor_Conio_D.dll")]
+        static extern int gettext(int __left, int __top, int __right, int __bottom, char[] __destin);
+
+        [DllImport("Bor_Conio_D.dll")]
+        static extern int puttext(int __left, int __top, int __right, int __bottom, char[] __source);
+
         private static Functions instance;
 
         public static Functions getInstance()
@@ -20,9 +27,11 @@ namespace Monefy
             return instance;
         }
         //--------------------------------------------------------
-        char[] DoubleLine = { (char)0x2554, (char)0x2550, (char)0x2557, (char)0x2551, (char)0x255A, (char)0x2550, (char)0x255D };
+        private enum FramePos { TopLeft,      Horizontal,   TopRight,     Vertical,     BottomLeft,   BottomRight };
 
-        char[] SingleLine = { (char)0x250C, (char)0x2500, (char)0x2510, (char)0x2502, (char)0x2514, (char)0x2500, (char)0x2518 };
+        char[] DoubleLine =   { (char)0x2554, (char)0x2550, (char)0x2557, (char)0x2551, (char)0x255A, (char)0x255D };
+
+        char[] SingleLine = { (char)0x250C, (char)0x2500, (char)0x2510, (char)0x2502, (char)0x2514,  (char)0x2518 };
         //--------------------------------------------------------
         private void Line(int x, int y, int length, ConsoleColor LineCol, char symbol = '—')
         {
@@ -52,90 +61,84 @@ namespace Monefy
             }
         }
         //--------------------------------------------------------
-        private void Frame(char type, int x, int y, int height, int length, ConsoleColor frameForCol, ConsoleColor frameBackCol = ConsoleColor.Black, string name = "", ConsoleColor nameCol = ConsoleColor.Red)
+        private void Frame(char type, int x, int y, int height, int width, ConsoleColor frameForCol, ConsoleColor frameBackCol = ConsoleColor.Black, string name = "", ConsoleColor nameCol = ConsoleColor.Red)
         {
-            int count = 0;
-
-            Console.SetCursorPosition(x, y);
             Console.ForegroundColor = frameForCol;
             Console.BackgroundColor = frameBackCol;
 
-            if (type == 'd')
-                Console.Write(DoubleLine[count]);
-            else
-                Console.Write(SingleLine[count]);
-            count++;
+            char[] Symb;
 
-            for (int i = 0; i < length - 1; i++)
+            if (type == 'd')
+		        Symb = DoubleLine;
+	        else
+		        Symb = SingleLine;
+	
+	        Console.SetCursorPosition(x, y);
+            Console.Write(Symb[(int)FramePos.TopLeft]);
+
+            if (name == "" || name.Length + 2 > width - 2)
             {
-                if (name != "" && i == (length - name.Length) / 2)
-                {
-                    Console.ForegroundColor = nameCol;
-                    Console.Write(name);
-                    Console.ForegroundColor = frameForCol;
-                    i += name.Length;
-                }
-                else
-                {
-                    if (type == 'd')
-                        Console.Write(DoubleLine[count]);
-                    else
-                        Console.Write(SingleLine[count]);
-                }
-            }
-            count++;
-
-            if (type == 'd')
-                Console.Write(DoubleLine[count]);
+	            for (int i = 0; i < width - 2; i++)
+                      	Console.Write(Symb[(int)FramePos.Horizontal]);
+		    }
             else
-                Console.Write(SingleLine[count]);
-            count++;
+            {
+			    int l1 = (width - 2 - (name.Length + 2)) / 2;
+			    int l2 = width - 2 - (name.Length + 2) - l1;
+
+	            for (int i = 0; i < l1; i++)
+                    Console.Write(Symb[(int)FramePos.Horizontal]);
+
+               	    Console.ForegroundColor = nameCol;
+                    Console.Write($" {name} ");
+       	            Console.ForegroundColor = frameForCol;
+
+	            for (int i = 0; i < l2; i++)
+                      	Console.Write(Symb[(int)FramePos.Horizontal]);
+            }
+
+            Console.Write(Symb[(int)FramePos.TopRight]);
 
             for (int i = 0; i < height - 2; i++)
             {
-                for (int j = 0; j < length; j++)
-                {
-                    if (j == 0 || j == length - 1)
-                    {
-                        Console.SetCursorPosition(j + x, i + y + 1);
+                Console.SetCursorPosition(x, y + i + 1);
+                Console.Write(Symb[(int)FramePos.Vertical]);
 
-                        if (type == 'd')
-                            Console.Write(DoubleLine[count]);
-                        else
-                            Console.Write(SingleLine[count]);
-                    }
-                }
+                Console.SetCursorPosition(x + width - 1, y + i + 1);
+                Console.Write(Symb[(int)FramePos.Vertical]);
+
             }
-            count++;
 
-            Console.SetCursorPosition(x, y + height - 2);
-            if (type == 'd')
-                Console.Write(DoubleLine[count]);
-            else
-                Console.Write(SingleLine[count]);
-            count++;
+            Console.SetCursorPosition(x, y + height - 1);
+            Console.Write(Symb[(int)FramePos.BottomLeft]);
 
-            for (int i = 0; i < length - 2; i++)
-            {
-                if (type == 'd')
-                    Console.Write(DoubleLine[count]);
-                else
-                    Console.Write(SingleLine[count]);
-            }
-            count++;
+            for (int i = 0; i < width - 2; i++)
+	            Console.Write(Symb[(int)FramePos.Horizontal]);
 
-            if (type == 'd')
-                Console.Write(DoubleLine[count]);
-            else
-                Console.Write(SingleLine[count]);
-            count++;
+            Console.Write(Symb[(int)FramePos.BottomRight]);
         }
         //--------------------------------------------------------
+	    struct FRAME_P
+        {
+            public char type;
+            public int x, y, height, width;
+            public ConsoleColor frameForCol, frameBackCol;
+            public string name;
+            public ConsoleColor nameCol;
+	    };
+
+        private void Frame(FRAME_P FP)
+        {
+		    Frame(FP.type, FP.x, FP.y, FP.height, FP.width, FP.frameForCol, FP.frameBackCol, FP.name, FP.nameCol);
+	    }
+        //--------------------------------------------------------
+        //private FRAME_P MainFrame = {'d', 17, 2, 30, 80, ConsoleColor.Green, ConsoleColor.Black, [StringValue("")] MONEFY, ConsoleColor.Magenta  };
+
         private enum MainFrame { MFChar = 'd', MFX = 17, MFY = 2, MFH = 30, MFL = 80, MFFC = ConsoleColor.Green, MFBC = ConsoleColor.Black, [StringValue("")]MONEFY, MFNC = ConsoleColor.Magenta }
 
-        private enum ReportsFrame { RepFChar = 's', RepFX = MainFrame.MFX + 2, RepFY = MainFrame.MFY + 1, RepFH = 6, RepFL = 10, RepFFC = ConsoleColor.White, RepFBC = ConsoleColor.Black, [StringValue("")]Reports, RepFLL = 6, RepFLC = ConsoleColor.Red }
+        private enum ReportsFrame { RepFChar = 's', RepFX = MainFrame.MFX + 2, RepFY = MainFrame.MFY + 1, RepFH = 6, RepFL = 12, RepFFC = ConsoleColor.White, RepFBC = ConsoleColor.Black, [StringValue("")]Reports, RepFLL = 6, RepFLC = ConsoleColor.Red }
 
-        private enum TransferFrame { TraFChar = 's', TraFX = MainFrame.MFL - 10, TraFY = MainFrame.MFY + 1, TraFH = 6, TraFL = 11, TraFFC = ConsoleColor.White, TraFBC = ConsoleColor.Black, [StringValue("")]Transfer, TraFLL = 6, TraFLC = ConsoleColor.White }
+        private enum TransferFrame { TraFChar = 's', TraFX = MainFrame.MFL - 10, TraFY = MainFrame.MFY + 1, TraFH = 6, TraFL = 13, TraFFC = ConsoleColor.White, TraFBC = ConsoleColor.Black, [StringValue("")]Transfer, TraFLL = 6, TraFLC = ConsoleColor.White }
 
         private enum SettingsFrame { SetFChar = 's', SetFX = MainFrame.MFL + 2, SetFY = MainFrame.MFY + 1, SetFH = 6, SetFL = 11, SetFFC = ConsoleColor.White, SetFBC = ConsoleColor.Black, [StringValue("")] Settings, SetFDC = ConsoleColor.White  }
 
@@ -152,6 +155,12 @@ namespace Monefy
         private enum DateParam { DateX = MainFrame.MFX + 25, DateY = MainFrame.MFY + 6, DateColF = ConsoleColor.Cyan };
 
         private List<ConsoleColor> CatNameCol = new List<ConsoleColor>();
+
+        private ConsoleColor[] CatColors = {ConsoleColor.Magenta, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.DarkBlue,
+            				    ConsoleColor.Cyan, ConsoleColor.Red, ConsoleColor.White, ConsoleColor.DarkMagenta,
+            				    ConsoleColor.Yellow, ConsoleColor.DarkYellow, ConsoleColor.DarkRed, ConsoleColor.DarkGray
+					   };
+
 
         string[] CategName = { "Food", "Home", "Cafe", "Hygiene", "Sport", "Health", "Phone", "Clothes", "Taxi", "Entertainment", "Transport", "Car" };
 
@@ -197,9 +206,9 @@ namespace Monefy
                 Console.WriteLine(arr[i]);
             }
 
-            int temp = MenuGo(ref select, arr);
+            int temp = MenuGo(select, arr.Length);
 
-            if (temp != -1)
+            if (temp >= 0)
             {
                 select = temp;
                 goto CONTI;
@@ -208,31 +217,33 @@ namespace Monefy
             Console.ForegroundColor = ConsoleColor.Gray;
         }
         //--------------------------------------------------------
-        public int MenuGo(ref int select, string[] arr)
+        public int MenuGo(int select, int len)
         {
             var key = Console.ReadKey(true).Key;
 
             switch (key)
             {
                 case ConsoleKey.DownArrow:
-                    if (select < arr.Length - 1)
+                    if (select < len - 1)
                         select++;
-                    return select;
+                    break; 
                 case ConsoleKey.UpArrow:
                     if (select > 0)
                         select--;
-                    return select;
+                    break; 
                 case ConsoleKey.RightArrow:
-                    select = arr.Length - 1;
-                    return select;
+                    select = len - 1;
+                    break; 
                 case ConsoleKey.LeftArrow:
                     select = 0;
-                    return select;
+                    break; 
                 case ConsoleKey.Escape:
                     return -1;
+                default:
+                    return -2;
             }
 
-            return -2;
+            return select;
         }
         //--------------------------------------------------------
         public void TabGo(int sel)
@@ -241,6 +252,7 @@ namespace Monefy
             {
                 case 0: //Reports
                     Frame((char)ReportsFrame.RepFChar, (int)ReportsFrame.RepFX, (int)ReportsFrame.RepFY, (int)ReportsFrame.RepFH, (int)ReportsFrame.RepFL, (ConsoleColor)ReportsFrame.RepFFC, ConsoleColor.Gray, ReportsFrame.Reports.ToString());
+                    //Frame(ReportsFrame);
                     break;
                 case 1: //Transfer
                     Frame((char)TransferFrame.TraFChar, (int)TransferFrame.TraFX, (int)TransferFrame.TraFY, (int)TransferFrame.TraFH, (int)TransferFrame.TraFL, (ConsoleColor)TransferFrame.TraFFC, ConsoleColor.Gray, TransferFrame.Transfer.ToString());
@@ -483,8 +495,6 @@ namespace Monefy
             Frame((char)AddSubParam.ASChar, (int)AddSubParam.ASX, (int)AddSubParam.ASY, (int)AddSubParam.ASH, (int)AddSubParam.ASL, (ConsoleColor)AddSubParam.ASFC, (ConsoleColor)AddSubParam.ASBC, type == 'a' ? AddSubParam.Addition.ToString() : AddSubParam.Substract.ToString(), (ConsoleColor)AddSubParam.ASNC);
 
             Clear((int)AddSubParam.ASX + 1, (int)AddSubParam.ASY + 1, (int)AddSubParam.ASL - 2, (int)AddSubParam.ASH - 3);
-
-
 
             Console.ReadKey();
         }
