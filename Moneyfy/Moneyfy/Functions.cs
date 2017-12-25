@@ -11,11 +11,11 @@ namespace Monefy
 { 
     public class Functions
     {
-        //[DllImport("Bor_Conio_D.dll")]
-        //static extern int gettext(int __left, int __top, int __right, int __bottom, char[] __destin);
+        [DllImport("Bor_Conio_D.dll")]
+        static extern int gettext(int __left, int __top, int __right, int __bottom, char[] __destin);
 
-        //[DllImport("Bor_Conio_D.dll")]
-        //static extern int puttext(int __left, int __top, int __right, int __bottom, char[] __source);
+        [DllImport("Bor_Conio_D.dll")]
+        static extern int puttext(int __left, int __top, int __right, int __bottom, char[] __source);
 
         private static Functions instance;
 
@@ -150,7 +150,7 @@ namespace Monefy
 
         private enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 5, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")]Quit, ExFNC = ConsoleColor.Black }
 
-        private enum AddSubParam { ASChar = 's', ASX = MainFrame.MFX + 20, ASY = MainFrame.MFY + 8, ASH = 14, ASL = 30, ASFC = ConsoleColor.Gray, ASBC = ConsoleColor.Black, [StringValue("")]Addition, [StringValue("")]Substract, ASNC = ConsoleColor.Gray }
+        private enum AddSubParam { ASChar = 's', ASX = MainFrame.MFX + 20, ASY = MainFrame.MFY + 8, ASH = 14, ASL = 40, ASFC = ConsoleColor.Gray, ASBC = ConsoleColor.Black, [StringValue("")]Addition, [StringValue("")]Substract, ASNC = ConsoleColor.Gray }
 
         private enum DateParam { DateX = MainFrame.MFX + 25, DateY = MainFrame.MFY + 6, DateColF = ConsoleColor.Cyan };
 
@@ -495,21 +495,37 @@ namespace Monefy
 
             Clear((int)AddSubParam.ASX + 1, (int)AddSubParam.ASY + 1, (int)AddSubParam.ASL - 2, (int)AddSubParam.ASH - 3);
 
-            Console.SetCursorPosition((int)AddSubParam.ASX, (int)AddSubParam.ASY + 2);
+            Console.CursorVisible = true;
+            Console.SetCursorPosition((int)AddSubParam.ASX + 1, (int)AddSubParam.ASY + 2);
             Console.Write("Sum: ");
             int sum = Convert.ToInt32(Console.ReadLine());
 
-            Console.SetCursorPosition((int)AddSubParam.ASX, (int)AddSubParam.ASY + 2);
-            Console.Write("Note: ");
+            Console.SetCursorPosition((int)AddSubParam.ASX + 1, (int)AddSubParam.ASY + 4);
+            Console.Write($"Note(max {(int)AddSubParam.ASL - 10}): ");
 
-            //for (int i = 0; i < 4; i++)
-            //{
-            //    int ctemp = Console.ReadKey().KeyChar;
-            //    password += Convert.ToChar(ctemp);
-            //}
-            //string temp = Console.ReadLine();
+            string note = null;
 
-            Console.ReadKey();
+            for (int i = 0; i < (int)AddSubParam.ASL - 15; i++)
+            {
+                int ctemp = Console.ReadKey().KeyChar;
+                note += Convert.ToChar(ctemp);
+            }
+
+            Console.SetCursorPosition((int)AddSubParam.ASX + 1, (int)AddSubParam.ASY + 6);
+
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.WriteLine("Select category ->");
+            Console.CursorVisible = false;
+
+            NOENTER:
+            var key = Console.ReadKey(true).Key;
+
+            if (key != ConsoleKey.Enter)
+            {
+                goto NOENTER;
+            }
+
+            Console.BackgroundColor = ConsoleColor.Black;
         }
         //--------------------------------------------------------
         public void DrawFrame()
