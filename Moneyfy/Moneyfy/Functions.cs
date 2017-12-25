@@ -11,11 +11,11 @@ namespace Monefy
 { 
     public class Functions
     {
-        [DllImport("Bor_Conio_D.dll")]
-        static extern int gettext(int __left, int __top, int __right, int __bottom, char[] __destin);
+        //[DllImport("Bor_Conio_D.dll")]
+        //static extern int gettext(int __left, int __top, int __right, int __bottom, char[] __destin);
 
-        [DllImport("Bor_Conio_D.dll")]
-        static extern int puttext(int __left, int __top, int __right, int __bottom, char[] __source);
+        //[DllImport("Bor_Conio_D.dll")]
+        //static extern int puttext(int __left, int __top, int __right, int __bottom, char[] __source);
 
         private static Functions instance;
 
@@ -136,19 +136,19 @@ namespace Monefy
 
         private enum MainFrame { MFChar = 'd', MFX = 17, MFY = 2, MFH = 30, MFL = 80, MFFC = ConsoleColor.Green, MFBC = ConsoleColor.Black, [StringValue("")]MONEFY, MFNC = ConsoleColor.Magenta }
 
-        private enum ReportsFrame { RepFChar = 's', RepFX = MainFrame.MFX + 2, RepFY = MainFrame.MFY + 1, RepFH = 6, RepFL = 12, RepFFC = ConsoleColor.White, RepFBC = ConsoleColor.Black, [StringValue("")]Reports, RepFLL = 6, RepFLC = ConsoleColor.Red }
+        private enum ReportsFrame { RepFChar = 's', RepFX = MainFrame.MFX + 2, RepFY = MainFrame.MFY + 1, RepFH = 5, RepFL = 11, RepFFC = ConsoleColor.White, RepFBC = ConsoleColor.Black, [StringValue("")]Reports, RepFLL = 7, RepFLC = ConsoleColor.Red }
 
-        private enum TransferFrame { TraFChar = 's', TraFX = MainFrame.MFL - 10, TraFY = MainFrame.MFY + 1, TraFH = 6, TraFL = 13, TraFFC = ConsoleColor.White, TraFBC = ConsoleColor.Black, [StringValue("")]Transfer, TraFLL = 6, TraFLC = ConsoleColor.White }
+        private enum TransferFrame { TraFChar = 's', TraFX = MainFrame.MFL - 10, TraFY = MainFrame.MFY + 1, TraFH = 5, TraFL = 12, TraFFC = ConsoleColor.White, TraFBC = ConsoleColor.Black, [StringValue("")]Transfer, TraFLL = 7, TraFLC = ConsoleColor.White }
 
-        private enum SettingsFrame { SetFChar = 's', SetFX = MainFrame.MFL + 2, SetFY = MainFrame.MFY + 1, SetFH = 6, SetFL = 11, SetFFC = ConsoleColor.White, SetFBC = ConsoleColor.Black, [StringValue("")] Settings, SetFDC = ConsoleColor.White  }
+        private enum SettingsFrame { SetFChar = 's', SetFX = MainFrame.MFL + 3, SetFY = MainFrame.MFY + 1, SetFH = 5, SetFL = 12, SetFFC = ConsoleColor.White, SetFBC = ConsoleColor.Black, [StringValue("")] Settings, SetFDC = ConsoleColor.White  }
 
-        private enum SubstractFrame { SubFChar = 's', SubFX = MainFrame.MFX + 4, SubFY = MainFrame.MFH - 4, SubFH = 4, SubFL = 12, SubFFC = ConsoleColor.White, SubFBC = ConsoleColor.Black, [StringValue("")]Substract, SubFLL = 5, SubFLC = ConsoleColor.Yellow }
+        private enum SubstractFrame { SubFChar = 's', SubFX = MainFrame.MFX + 4, SubFY = MainFrame.MFH - 4, SubFH = 3, SubFL = 13, SubFFC = ConsoleColor.White, SubFBC = ConsoleColor.Black, [StringValue("")]Substract, SubFLL = 5, SubFLC = ConsoleColor.Yellow }
 
-        private enum AdditionFrame { AddFChar = 's', AddFX = MainFrame.MFL - 1, AddFY = MainFrame.MFH - 4, AddFH = 4, AddFL = 11, AddFFC = ConsoleColor.White, AddFBC = ConsoleColor.Black, [StringValue("")]Addition, AddFLL = 5, AddFLC = ConsoleColor.Yellow }
+        private enum AdditionFrame { AddFChar = 's', AddFX = MainFrame.MFL - 1, AddFY = MainFrame.MFH - 4, AddFH = 3, AddFL = 12, AddFFC = ConsoleColor.White, AddFBC = ConsoleColor.Black, [StringValue("")]Addition, AddFLL = 5, AddFLC = ConsoleColor.Yellow }
 
         private enum BalanceFrame { BalFChar = 'd', BalFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2), BalFY = MainFrame.MFH - 6, BalFH = 7, BalFL = 17, BalFFC = ConsoleColor.DarkGreen, BalFBC = ConsoleColor.Black, [StringValue("")]Balance }
 
-        private enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 6, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")]Quit, ExFNC = ConsoleColor.Black }
+        private enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 5, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")]Quit, ExFNC = ConsoleColor.Black }
 
         private enum AddSubParam { ASChar = 's', ASX = MainFrame.MFX + 20, ASY = MainFrame.MFY + 8, ASH = 14, ASL = 30, ASFC = ConsoleColor.Gray, ASBC = ConsoleColor.Black, [StringValue("")]Addition, [StringValue("")]Substract, ASNC = ConsoleColor.Gray }
 
@@ -158,8 +158,7 @@ namespace Monefy
 
         private ConsoleColor[] CatColors = {ConsoleColor.Magenta, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.DarkBlue,
             				    ConsoleColor.Cyan, ConsoleColor.Red, ConsoleColor.White, ConsoleColor.DarkMagenta,
-            				    ConsoleColor.Yellow, ConsoleColor.DarkYellow, ConsoleColor.DarkRed, ConsoleColor.DarkGray
-					   };
+            				    ConsoleColor.Yellow, ConsoleColor.DarkYellow, ConsoleColor.DarkRed, ConsoleColor.DarkGray };
 
 
         string[] CategName = { "Food", "Home", "Cafe", "Hygiene", "Sport", "Health", "Phone", "Clothes", "Taxi", "Entertainment", "Transport", "Car" };
@@ -481,7 +480,7 @@ namespace Monefy
         {
             Frame((char)SettingsFrame.SetFChar, (int)TransferFrame.TraFX, (int)MainFrame.MFY, (int)MainFrame.MFH, (int)TransferFrame.TraFL + (int)SettingsFrame.SetFL + 5, (ConsoleColor)SettingsFrame.SetFFC, (ConsoleColor)SettingsFrame.SetFBC, SettingsFrame.Settings.ToString());
 
-            Clear((int)TransferFrame.TraFX + 1, (int)MainFrame.MFY + 1, (int)TransferFrame.TraFL + (int)SettingsFrame.SetFL + 2, (int)MainFrame.MFH - 3);
+            Clear((int)TransferFrame.TraFX + 1, (int)MainFrame.MFY + 1, (int)TransferFrame.TraFL + (int)SettingsFrame.SetFL + 3, (int)MainFrame.MFH - 2);
 
             x = (int)TransferFrame.TraFX + 1;
             y = (int)MainFrame.MFY + 2;
@@ -495,6 +494,20 @@ namespace Monefy
             Frame((char)AddSubParam.ASChar, (int)AddSubParam.ASX, (int)AddSubParam.ASY, (int)AddSubParam.ASH, (int)AddSubParam.ASL, (ConsoleColor)AddSubParam.ASFC, (ConsoleColor)AddSubParam.ASBC, type == 'a' ? AddSubParam.Addition.ToString() : AddSubParam.Substract.ToString(), (ConsoleColor)AddSubParam.ASNC);
 
             Clear((int)AddSubParam.ASX + 1, (int)AddSubParam.ASY + 1, (int)AddSubParam.ASL - 2, (int)AddSubParam.ASH - 3);
+
+            Console.SetCursorPosition((int)AddSubParam.ASX, (int)AddSubParam.ASY + 2);
+            Console.Write("Sum: ");
+            int sum = Convert.ToInt32(Console.ReadLine());
+
+            Console.SetCursorPosition((int)AddSubParam.ASX, (int)AddSubParam.ASY + 2);
+            Console.Write("Note: ");
+
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    int ctemp = Console.ReadKey().KeyChar;
+            //    password += Convert.ToChar(ctemp);
+            //}
+            //string temp = Console.ReadLine();
 
             Console.ReadKey();
         }
