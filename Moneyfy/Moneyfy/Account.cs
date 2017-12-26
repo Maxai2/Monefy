@@ -14,6 +14,7 @@ namespace Monefy
         public Currency Cur { get; set; }
         public double Money { get; set; }
         public bool Hidden { get; set; }
+        public bool Active { get; set; }
 
         public Account(string name, Currency cur, double money, bool hidden)
         {
@@ -21,6 +22,11 @@ namespace Monefy
             Cur = cur;
             Money = money;
             Hidden = hidden;
+        }
+
+        public Account GetAccount()
+        {
+            return this;
         }
 
         public int CompareTo(object obj)

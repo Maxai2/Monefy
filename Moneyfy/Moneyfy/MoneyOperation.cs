@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 //--------------------------------------------------------
 namespace Monefy
 {
-    class MoneyOperation : ICSVWritable, IConsoleWritable, IComparable
+    public class MoneyOperation : ICSVWritable, IConsoleWritable, IComparable
     {
         public double Amount { get; set; }
         public Category Cat { get; set; }

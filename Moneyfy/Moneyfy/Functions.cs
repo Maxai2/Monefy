@@ -163,11 +163,13 @@ namespace Monefy
 
         string[] CategName = { "Food", "Home", "Cafe", "Hygiene", "Sport", "Health", "Phone", "Clothes", "Taxi", "Entertainment", "Transport", "Car" };
 
+        string[] AccName = { "Cash", "Card" };
+
         string[] ReportsMenuName = { "Change Account", "Date change", "Transaction to txt", "Export to CSV" };
 
         string[] SettingsMenuName = { "Redact Category", "Redact Account", "Change Language", "Add/Change Money Limit", "Add/Change Subscription" };
 
-        private int x = 0, y = 0, select = 0;
+        private int x = 0, y = 0;
         //--------------------------------------------------------
         public void AddCol()
         {
@@ -190,7 +192,7 @@ namespace Monefy
             //CatNameCol.Add(ConsoleColor.DarkGray);
         }
         //--------------------------------------------------------
-        public void Menu(int x, int y, ref int select, string[] arr)
+        public int Menu(int x, int y, string[] arr, int select = 0)
         {
             CONTI:
             for (int i = 0; i < arr.Length; i++)
@@ -207,6 +209,11 @@ namespace Monefy
 
             int temp = MenuGo(select, arr.Length);
 
+            if (temp == -3)
+            {
+
+            }
+
             if (temp >= 0)
             {
                 select = temp;
@@ -214,10 +221,12 @@ namespace Monefy
             }
 
             Console.ForegroundColor = ConsoleColor.Gray;
+            return select;
         }
         //--------------------------------------------------------
         public int MenuGo(int select, int len)
         {
+            ERRORKEY:
             var key = Console.ReadKey(true).Key;
 
             switch (key)
@@ -235,11 +244,13 @@ namespace Monefy
                     break; 
                 case ConsoleKey.LeftArrow:
                     select = 0;
-                    break; 
+                    break;
+                case ConsoleKey.Enter:
+                    break;
                 case ConsoleKey.Escape:
                     return -1;
                 default:
-                    return -2;
+                    goto ERRORKEY;
             }
 
             return select;
@@ -367,6 +378,17 @@ namespace Monefy
                 Application.getInstance().AddCategories(CategName[i], Type.Income);
         }
         //--------------------------------------------------------
+        public void TemplateAccName()
+        {
+            for (int i = 0; i < AccName.Length; i++)
+                Application.getInstance().AddAccount(AccName[i], Currency.AZN, 0.0, false);
+        }
+        //--------------------------------------------------------
+        public void ActiveAcc()
+        {
+            Application.Accounts[0].GetAccount().Active = true;
+        }
+        //--------------------------------------------------------
         //public void CatNameStatusLine(double food, double home, double cafe, double hygiene, double sport, double health, double phone, double clothes, double taxi, double entertainment, double transport, double car)
         private void CatNameStatusLine(params double[] cats)
         {
@@ -472,8 +494,7 @@ namespace Monefy
             x = (int)MainFrame.MFX + 1;
             y = (int)MainFrame.MFY + 2;
 
-            Menu(x, y, ref select, ReportsMenuName);
-            select = 0;
+            Menu(x, y, ReportsMenuName);
         }
         //--------------------------------------------------------
         public void SettingsWindow()
@@ -485,14 +506,14 @@ namespace Monefy
             x = (int)TransferFrame.TraFX + 1;
             y = (int)MainFrame.MFY + 2;
 
-            Menu(x, y, ref select, SettingsMenuName);
-            select = 0;
+            Menu(x, y, SettingsMenuName);
         }
         //--------------------------------------------------------
         public void AddSubWindow(char type)
         {
             Frame((char)AddSubParam.ASChar, (int)AddSubParam.ASX, (int)AddSubParam.ASY, (int)AddSubParam.ASH, (int)AddSubParam.ASL, (ConsoleColor)AddSubParam.ASFC, (ConsoleColor)AddSubParam.ASBC, type == 'a' ? AddSubParam.Addition.ToString() : AddSubParam.Substract.ToString(), (ConsoleColor)AddSubParam.ASNC);
 
+            BEGIN:
             Clear((int)AddSubParam.ASX + 1, (int)AddSubParam.ASY + 1, (int)AddSubParam.ASL - 2, (int)AddSubParam.ASH - 3);
 
             Console.CursorVisible = true;
@@ -500,32 +521,84 @@ namespace Monefy
             Console.Write("Sum: ");
             int sum = Convert.ToInt32(Console.ReadLine());
 
+            for (int i = 0; i < Application.Accounts.Count; i++)
+            {
+                if (true)
+                {
+
+                }
+            }
+
+            Console.SetCursorPosition((int)AddSubParam.ASX + sum.ToString().Length, (int)AddSubParam.ASY + 2);
+            Console.Write($"{Application.Accounts[0].GetAccount().Cur}");
+
             Console.SetCursorPosition((int)AddSubParam.ASX + 1, (int)AddSubParam.ASY + 4);
-            Console.Write($"Note(max {(int)AddSubParam.ASL - 10}): ");
+            Console.Write($"Note(max {(int)AddSubParam.ASL - 15}):");
 
             string note = null;
 
             for (int i = 0; i < (int)AddSubParam.ASL - 15; i++)
             {
-                int ctemp = Console.ReadKey().KeyChar;
-                note += Convert.ToChar(ctemp);
+                char ctemp = Console.ReadKey().KeyChar;
+
+                if (ctemp == (char)ConsoleKey.Enter)
+                    break;
+
+                note += ctemp;
             }
 
             Console.SetCursorPosition((int)AddSubParam.ASX + 1, (int)AddSubParam.ASY + 6);
 
-            Console.BackgroundColor = ConsoleColor.Green;
-            Console.WriteLine("Select category ->");
+            Console.BackgroundColor = ConsoleColor.Blue;
+
+            Console.WriteLine($"Select category -> ");
             Console.CursorVisible = false;
 
             NOENTER:
             var key = Console.ReadKey(true).Key;
 
             if (key != ConsoleKey.Enter)
-            {
                 goto NOENTER;
-            }
+
+            //char[] destin = new char[(int)AddSubParam.ASH * ((int)AddSubParam.ASL - 25) * 2];
+            //gettext((int)AddSubParam.ASX + (int)AddSubParam.ASL + 1, (int)AddSubParam.ASY, (int)AddSubParam.ASX + (int)AddSubParam.ASL + 1 + (int)AddSubParam.ASL, (int)AddSubParam.ASY + (int)AddSubParam.ASH, destin);
+
+            Frame('s', (int)AddSubParam.ASX + (int)AddSubParam.ASL + 1, (int)AddSubParam.ASY, (int)AddSubParam.ASH, (int)AddSubParam.ASL - 25, (ConsoleColor)AddSubParam.ASFC);
+
+            int MenuAns = Menu((int)AddSubParam.ASX + (int)AddSubParam.ASL + 2, (int)AddSubParam.ASY + 1, type == 's' ? AccName : CategName);
+
+            Console.ReadKey();
+            Clear((int)AddSubParam.ASX + (int)AddSubParam.ASL + 1, (int)AddSubParam.ASY, (int)AddSubParam.ASL - 25, (int)AddSubParam.ASH);
+
+            Clear((int)AddSubParam.ASX + 29, (int)AddSubParam.ASY + 6, 14, 1);
+            Console.SetCursorPosition((int)AddSubParam.ASX + 29, (int)AddSubParam.ASY + 6);
+
+            string str = type == 'a' ? CategName[MenuAns] : AccName[MenuAns];
+            Console.Write(str);
 
             Console.BackgroundColor = ConsoleColor.Black;
+
+            Console.SetCursorPosition((int)AddSubParam.ASX + 1, (int)AddSubParam.ASY + 8);
+            Console.Write("Save or again?(y/n): ");
+
+            Console.CursorVisible = true;
+
+            ANSAGAIN:
+            char ans = Console.ReadKey(true).KeyChar;
+
+            if (ans != 'n' || ans != 'y')
+                goto ANSAGAIN;
+
+            if (ans == 'n')
+            {
+                //puttext((int)AddSubParam.ASX + (int)AddSubParam.ASL + 1, (int)AddSubParam.ASY, (int)AddSubParam.ASX + (int)AddSubParam.ASL + 1 + (int)AddSubParam.ASL, (int)AddSubParam.ASY + (int)AddSubParam.ASH, destin);
+                goto BEGIN;
+            }
+
+            if (type == 'a')
+                Application.getInstance().AddOutcomes(sum, Application.Incomes[MenuAns], note, DateTime.Today);
+            else
+                Application.getInstance().AddOutcomes(sum, Application.Categories[MenuAns], note, DateTime.Today);
         }
         //--------------------------------------------------------
         public void DrawFrame()
