@@ -10,9 +10,8 @@ namespace Monefy
     {
         static void Main(string[] args)
         {
-            Functions.getInstance().TemplateCatName();
+            Functions.getInstance().TemplateName();
             Console.CursorVisible = false;
-            Functions.getInstance().AddCol();
             //Functions.getInstance().CatNameStatusLine(100, 50, 5, 67, 34, 56, 34, 2, 4, 6, 23, 5);
 
             Functions.getInstance().DrawFrame();
@@ -39,6 +38,10 @@ namespace Monefy
                         {
                             case 0:
                                 Functions.getInstance().ReportWindow();
+                                Console.Clear();
+                                break;
+                            case 1:
+                                Functions.getInstance().TransferWindow();
                                 Console.Clear();
                                 break;
                             case 2:

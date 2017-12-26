@@ -24,11 +24,6 @@ namespace Monefy
             Hidden = hidden;
         }
 
-        public Account GetAccount()
-        {
-            return this;
-        }
-
         public int CompareTo(object obj)
         {
             throw new NotImplementedException();
