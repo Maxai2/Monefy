@@ -173,11 +173,14 @@ namespace Monefy
 
         private int x = 0, y = 0;
         //--------------------------------------------------------
-        public int Menu(int x, int y, string[] arr, int select = 0)
+        public int Menu(int x, int y, string[] arr, int select = 0, int exception = -1)
         {
             CONTI:
-            for (int i = 0; i < arr.Length; i++)
+            for (int i = 0; i < (exception >= 0 ? arr.Length - 1 : arr.Length); i++)
             {
+                if (exception >= 0 && i == exception)
+                    continue;
+
                 Console.SetCursorPosition(x, y + i);
 
                 if (i == select)
@@ -188,19 +191,14 @@ namespace Monefy
                 Console.WriteLine(arr[i]);
             }
 
-            int temp = MenuGo(select, arr.Length);
+            int temp = MenuGo(select, exception >= 0 ? arr.Length - 1 : arr.Length);
+            select = temp;
 
             if (temp == -3)
-            {
-                select = temp;
                 goto ENTER;
-            }
 
             if (temp >= 0)
-            {
-                select = temp;
                 goto CONTI;
-            }
 
             ENTER:
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -506,7 +504,7 @@ namespace Monefy
             Menu(x, y, SettingsMenuName);
         }
         //--------------------------------------------------------
-        public void AddSubWindow(char type)
+        public void AddSubTrWindow(char type)
         {
             Frame((char)AddSubTrParam.ASChar, (int)AddSubTrParam.ASX, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASH, (int)AddSubTrParam.ASL, (ConsoleColor)AddSubTrParam.ASFC, (ConsoleColor)AddSubTrParam.ASBC, type == 'a' ? AddSubTrParam.Addition.ToString() : AddSubTrParam.Substract.ToString(), (ConsoleColor)AddSubTrParam.ASNC);
 
@@ -530,6 +528,7 @@ namespace Monefy
             Console.Write($"{Application.Accounts[index].Cur}");
 
             Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 4);
+
             Console.Write($"Note(max {(int)AddSubTrParam.ASL - 15}):");
 
             string note = null;
@@ -548,7 +547,8 @@ namespace Monefy
 
             Console.BackgroundColor = ConsoleColor.Blue;
 
-            Console.WriteLine($"Select category -> ");
+            Console.WriteLine("Select category -> ");
+
             Console.CursorVisible = false;
 
             NOENTER:
@@ -589,7 +589,7 @@ namespace Monefy
                     goto ANSAGAIN;
             }
 
-                //puttext((int)AddSubParam.ASX + (int)AddSubParam.ASL + 1, (int)AddSubParam.ASY, (int)AddSubParam.ASX + (int)AddSubParam.ASL + 1 + (int)AddSubParam.ASL, (int)AddSubParam.ASY + (int)AddSubParam.ASH, destin);
+            //puttext((int)AddSubParam.ASX + (int)AddSubParam.ASL + 1, (int)AddSubParam.ASY, (int)AddSubParam.ASX + (int)AddSubParam.ASL + 1 + (int)AddSubParam.ASL, (int)AddSubParam.ASY + (int)AddSubParam.ASH, destin);
 
             if (type == 'a')
                 Application.getInstance().AddOutcomes(sum, Application.Incomes[MenuAns], note, DateTime.Today);
@@ -603,6 +603,7 @@ namespace Monefy
         {
             Frame((char)AddSubTrParam.ASChar, (int)AddSubTrParam.ASX, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASH, (int)AddSubTrParam.ASL, (ConsoleColor)AddSubTrParam.ASFC, (ConsoleColor)AddSubTrParam.ASBC, AddSubTrParam.Transfer.ToString(), (ConsoleColor)AddSubTrParam.ASNC);
 
+            BEGIN:
             Clear((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 1, (int)AddSubTrParam.ASL - 2, (int)AddSubTrParam.ASH - 3);
 
             Console.CursorVisible = true;
@@ -622,6 +623,7 @@ namespace Monefy
             Console.Write($"{Application.Accounts[index].Cur}");
 
             Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 4);
+
             Console.Write($"Note(max {(int)AddSubTrParam.ASL - 15}):");
 
             string note = null;
@@ -636,56 +638,63 @@ namespace Monefy
                 note += ctemp;
             }
 
+
+
             Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 6);
 
             Console.BackgroundColor = ConsoleColor.Blue;
 
-            Console.WriteLine($"From -> ");
+            Console.WriteLine("From -> ");
+
             Console.CursorVisible = false;
 
-            NOENTER:
+            NOFROMENTER:
             var key = Console.ReadKey(true).Key;
 
             if (key != ConsoleKey.Enter)
-                goto NOENTER;
+                goto NOFROMENTER;
 
             Frame('s', (int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 1, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASH, (int)AddSubTrParam.ASL - 25, (ConsoleColor)AddSubTrParam.ASFC);
 
-            int MenuAns = Menu((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 2, (int)AddSubTrParam.ASY + 1, AccName);
+            int FromAns = Menu((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 2, (int)AddSubTrParam.ASY + 1, AccName);
 
             Clear((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 1, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASL - 25, (int)AddSubTrParam.ASH);
 
-            Console.SetCursorPosition((int)AddSubTrParam.ASX + 20, (int)AddSubTrParam.ASY + 6);
+            Console.SetCursorPosition((int)AddSubTrParam.ASX + 10, (int)AddSubTrParam.ASY + 6);
 
-            string str = type == 'a' ? CategName[MenuAns] : AccName[MenuAns];
-            Console.Write(str);
+            Console.Write(AccName[FromAns]);
 
             Console.BackgroundColor = ConsoleColor.Black;
 
-            Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 8);
-            Console.Write("Save or again?");
+            Console.SetCursorPosition((int)AddSubTrParam.ASX + 15, (int)AddSubTrParam.ASY + 7);
+            Console.WriteLine("|");
+            Console.SetCursorPosition((int)AddSubTrParam.ASX + 15, (int)AddSubTrParam.ASY + 8);
+            Console.WriteLine("V");
 
-            ANSAGAIN:
-            var ans = Console.ReadKey(true).Key;
+            Console.BackgroundColor = ConsoleColor.Blue;
 
-            switch (ans)
-            {
-                case ConsoleKey.Escape:
-                    goto BEGIN;
-                case ConsoleKey.Enter:
-                    break;
-                default:
-                    goto ANSAGAIN;
-            }
+            Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 9);
+            Console.WriteLine("To -> ");
 
-            //puttext((int)AddSubParam.ASX + (int)AddSubParam.ASL + 1, (int)AddSubParam.ASY, (int)AddSubParam.ASX + (int)AddSubParam.ASL + 1 + (int)AddSubParam.ASL, (int)AddSubParam.ASY + (int)AddSubParam.ASH, destin);
+            Console.CursorVisible = false;
 
-            if (type == 'a')
-                Application.getInstance().AddOutcomes(sum, Application.Incomes[MenuAns], note, DateTime.Today);
-            else
-                Application.getInstance().AddOutcomes(sum, Application.Categories[MenuAns], note, DateTime.Today);
+            NOTOENTER:
+            key = Console.ReadKey(true).Key;
 
-            Console.Clear();
+            if (key != ConsoleKey.Enter)
+                goto NOTOENTER;
+
+            Frame('s', (int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 1, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASH, (int)AddSubTrParam.ASL - 25, (ConsoleColor)AddSubTrParam.ASFC);
+
+            int ToAns = Menu((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 2, (int)AddSubTrParam.ASY + 1, AccName, 0, FromAns);
+
+            Clear((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 1, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASL - 25, (int)AddSubTrParam.ASH);
+
+            Console.SetCursorPosition((int)AddSubTrParam.ASX + 10, (int)AddSubTrParam.ASY + 9);
+
+            Console.Write(AccName[ToAns]);
+
+            Console.BackgroundColor = ConsoleColor.Black;
 
             Console.Read();
         }

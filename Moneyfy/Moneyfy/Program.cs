@@ -50,7 +50,7 @@ namespace Monefy
                                 break;
                             case 3:
                             case 4:
-                                Functions.getInstance().AddSubWindow(select == 3 ? 's' : 'a');
+                                Functions.getInstance().AddSubTrWindow(select == 3 ? 's' : 'a');
                                 Console.Clear();
                                 break;
                             default:
