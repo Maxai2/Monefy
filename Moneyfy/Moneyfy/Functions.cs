@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 //--------------------------------------------------------
 namespace Monefy
-{ 
+{
     public class Functions
     {
         [DllImport("Bor_Conio_D.dll")]
@@ -27,11 +27,11 @@ namespace Monefy
             return instance;
         }
         //--------------------------------------------------------
-        private enum FramePos { TopLeft,      Horizontal,   TopRight,     Vertical,     BottomLeft,   BottomRight };
+        private enum FramePos { TopLeft, Horizontal, TopRight, Vertical, BottomLeft, BottomRight };
 
-        char[] DoubleLine =   { (char)0x2554, (char)0x2550, (char)0x2557, (char)0x2551, (char)0x255A, (char)0x255D };
+        char[] DoubleLine = { (char)0x2554, (char)0x2550, (char)0x2557, (char)0x2551, (char)0x255A, (char)0x255D };
 
-        char[] SingleLine = { (char)0x250C, (char)0x2500, (char)0x2510, (char)0x2502, (char)0x2514,  (char)0x2518 };
+        char[] SingleLine = { (char)0x250C, (char)0x2500, (char)0x2510, (char)0x2502, (char)0x2514, (char)0x2518 };
         //--------------------------------------------------------
         private void Line(int x, int y, int length, ConsoleColor LineCol, char symbol = '—')
         {
@@ -69,32 +69,32 @@ namespace Monefy
             char[] Symb;
 
             if (type == 'd')
-		        Symb = DoubleLine;
-	        else
-		        Symb = SingleLine;
-	
-	        Console.SetCursorPosition(x, y);
+                Symb = DoubleLine;
+            else
+                Symb = SingleLine;
+
+            Console.SetCursorPosition(x, y);
             Console.Write(Symb[(int)FramePos.TopLeft]);
 
             if (name == "" || name.Length + 2 > width - 2)
             {
-	            for (int i = 0; i < width - 2; i++)
-                      	Console.Write(Symb[(int)FramePos.Horizontal]);
-		    }
+                for (int i = 0; i < width - 2; i++)
+                    Console.Write(Symb[(int)FramePos.Horizontal]);
+            }
             else
             {
-			    int l1 = (width - 2 - (name.Length + 2)) / 2;
-			    int l2 = width - 2 - (name.Length + 2) - l1;
+                int l1 = (width - 2 - (name.Length + 2)) / 2;
+                int l2 = width - 2 - (name.Length + 2) - l1;
 
-	            for (int i = 0; i < l1; i++)
+                for (int i = 0; i < l1; i++)
                     Console.Write(Symb[(int)FramePos.Horizontal]);
 
-               	    Console.ForegroundColor = nameCol;
-                    Console.Write($" {name} ");
-       	            Console.ForegroundColor = frameForCol;
+                Console.ForegroundColor = nameCol;
+                Console.Write($" {name} ");
+                Console.ForegroundColor = frameForCol;
 
-	            for (int i = 0; i < l2; i++)
-                      	Console.Write(Symb[(int)FramePos.Horizontal]);
+                for (int i = 0; i < l2; i++)
+                    Console.Write(Symb[(int)FramePos.Horizontal]);
             }
 
             Console.Write(Symb[(int)FramePos.TopRight]);
@@ -113,44 +113,44 @@ namespace Monefy
             Console.Write(Symb[(int)FramePos.BottomLeft]);
 
             for (int i = 0; i < width - 2; i++)
-	            Console.Write(Symb[(int)FramePos.Horizontal]);
+                Console.Write(Symb[(int)FramePos.Horizontal]);
 
             Console.Write(Symb[(int)FramePos.BottomRight]);
         }
         //--------------------------------------------------------
-	    struct FRAME_P
+        struct FRAME_P
         {
             public char type;
             public int x, y, height, width;
             public ConsoleColor frameForCol, frameBackCol;
             public string name;
             public ConsoleColor nameCol;
-	    };
+        };
 
         private void Frame(FRAME_P FP)
         {
-		    Frame(FP.type, FP.x, FP.y, FP.height, FP.width, FP.frameForCol, FP.frameBackCol, FP.name, FP.nameCol);
-	    }
+            Frame(FP.type, FP.x, FP.y, FP.height, FP.width, FP.frameForCol, FP.frameBackCol, FP.name, FP.nameCol);
+        }
         //--------------------------------------------------------
         //private FRAME_P MainFrame = {'d', 17, 2, 30, 80, ConsoleColor.Green, ConsoleColor.Black, [StringValue("")] MONEFY, ConsoleColor.Magenta  };
 
-        private enum MainFrame { MFChar = 'd', MFX = 17, MFY = 2, MFH = 30, MFL = 80, MFFC = ConsoleColor.Green, MFBC = ConsoleColor.Black, [StringValue("")]MONEFY, MFNC = ConsoleColor.Magenta }
+        private enum MainFrame { MFChar = 'd', MFX = 17, MFY = 2, MFH = 30, MFL = 80, MFFC = ConsoleColor.Green, MFBC = ConsoleColor.Black, [StringValue("")] MONEFY, MFNC = ConsoleColor.Magenta }
 
-        private enum ReportsFrame { RepFChar = 's', RepFX = MainFrame.MFX + 2, RepFY = MainFrame.MFY + 1, RepFH = 5, RepFL = 11, RepFFC = ConsoleColor.White, RepFBC = ConsoleColor.Black, [StringValue("")]Reports, RepFLL = 7, RepFLC = ConsoleColor.Red }
+        private enum ReportsFrame { RepFChar = 's', RepFX = MainFrame.MFX + 2, RepFY = MainFrame.MFY + 1, RepFH = 5, RepFL = 11, RepFFC = ConsoleColor.White, RepFBC = ConsoleColor.Black, [StringValue("")] Reports, RepFLL = 7, RepFLC = ConsoleColor.Red }
 
-        private enum TransferFrame { TraFChar = 's', TraFX = MainFrame.MFL - 10, TraFY = MainFrame.MFY + 1, TraFH = 5, TraFL = 12, TraFFC = ConsoleColor.White, TraFBC = ConsoleColor.Black, [StringValue("")]Transfer, TraFLL = 7, TraFLC = ConsoleColor.White }
+        private enum TransferFrame { TraFChar = 's', TraFX = MainFrame.MFL - 10, TraFY = MainFrame.MFY + 1, TraFH = 5, TraFL = 12, TraFFC = ConsoleColor.White, TraFBC = ConsoleColor.Black, [StringValue("")] Transfer, TraFLL = 7, TraFLC = ConsoleColor.White }
 
-        private enum SettingsFrame { SetFChar = 's', SetFX = MainFrame.MFL + 3, SetFY = MainFrame.MFY + 1, SetFH = 5, SetFL = 12, SetFFC = ConsoleColor.White, SetFBC = ConsoleColor.Black, [StringValue("")] Settings, SetFDC = ConsoleColor.White  }
+        private enum SettingsFrame { SetFChar = 's', SetFX = MainFrame.MFL + 3, SetFY = MainFrame.MFY + 1, SetFH = 5, SetFL = 12, SetFFC = ConsoleColor.White, SetFBC = ConsoleColor.Black, [StringValue("")] Settings, SetFDC = ConsoleColor.White }
 
-        private enum SubstractFrame { SubFChar = 's', SubFX = MainFrame.MFX + 4, SubFY = MainFrame.MFH - 4, SubFH = 3, SubFL = 13, SubFFC = ConsoleColor.White, SubFBC = ConsoleColor.Black, [StringValue("")]Substract, SubFLL = 5, SubFLC = ConsoleColor.Yellow }
+        private enum SubstractFrame { SubFChar = 's', SubFX = MainFrame.MFX + 4, SubFY = MainFrame.MFH - 4, SubFH = 3, SubFL = 13, SubFFC = ConsoleColor.White, SubFBC = ConsoleColor.Black, [StringValue("")] Substract, SubFLL = 5, SubFLC = ConsoleColor.Yellow }
 
-        private enum AdditionFrame { AddFChar = 's', AddFX = MainFrame.MFL - 1, AddFY = MainFrame.MFH - 4, AddFH = 3, AddFL = 12, AddFFC = ConsoleColor.White, AddFBC = ConsoleColor.Black, [StringValue("")]Addition, AddFLL = 5, AddFLC = ConsoleColor.Yellow }
+        private enum AdditionFrame { AddFChar = 's', AddFX = MainFrame.MFL - 1, AddFY = MainFrame.MFH - 4, AddFH = 3, AddFL = 12, AddFFC = ConsoleColor.White, AddFBC = ConsoleColor.Black, [StringValue("")] Addition, AddFLL = 5, AddFLC = ConsoleColor.Yellow }
 
-        private enum BalanceFrame { BalFChar = 'd', BalFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2), BalFY = MainFrame.MFH - 6, BalFH = 7, BalFL = 17, BalFFC = ConsoleColor.DarkGreen, BalFBC = ConsoleColor.Black, [StringValue("")]Balance }
+        private enum BalanceFrame { BalFChar = 'd', BalFX = (MainFrame.MFL / 2) - (MainFrame.MFX / 2), BalFY = MainFrame.MFH - 6, BalFH = 7, BalFL = 25, BalFFC = ConsoleColor.DarkGreen, BalFBC = ConsoleColor.Black, [StringValue("")] Balance }
 
-        private enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 5, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")]Quit, ExFNC = ConsoleColor.Black }
+        private enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 5, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")] Quit, ExFNC = ConsoleColor.Black }
 
-        private enum AddSubTrParam { ASChar = 's', ASX = MainFrame.MFX + 20, ASY = MainFrame.MFY + 8, ASH = 14, ASL = 40, ASFC = ConsoleColor.Gray, ASBC = ConsoleColor.Black, [StringValue("")]Addition, [StringValue("")]Substract, ASNC = ConsoleColor.Gray, [StringValue("")]Transfer }
+        private enum AddSubTrParam { ASChar = 's', ASX = MainFrame.MFX + 20, ASY = MainFrame.MFY + 8, ASH = 14, ASL = 40, ASFC = ConsoleColor.Gray, ASBC = ConsoleColor.Black, [StringValue("")] Addition, [StringValue("")] Substract, ASNC = ConsoleColor.Gray, [StringValue("")] Transfer }
 
         //private enum TransferParam { TrChar = 's', TrX = }
 
@@ -159,13 +159,13 @@ namespace Monefy
         private List<ConsoleColor> CatNameCol = new List<ConsoleColor>();
 
         private ConsoleColor[] CatColors = {ConsoleColor.Magenta, ConsoleColor.Blue, ConsoleColor.Green, ConsoleColor.DarkBlue,
-            				    ConsoleColor.Cyan, ConsoleColor.Red, ConsoleColor.White, ConsoleColor.DarkMagenta,
-            				    ConsoleColor.Yellow, ConsoleColor.DarkYellow, ConsoleColor.DarkRed, ConsoleColor.DarkGray };
+                                ConsoleColor.Cyan, ConsoleColor.Red, ConsoleColor.White, ConsoleColor.DarkMagenta,
+                                ConsoleColor.Yellow, ConsoleColor.DarkYellow, ConsoleColor.DarkRed, ConsoleColor.DarkGray };
 
 
-        string[] CategName = { "Food", "Home", "Cafe", "Hygiene", "Sport", "Health", "Phone", "Clothes", "Taxi", "Entertainment", "Transport", "Car" };
+        string[] TemplCategName = { "Food", "Home", "Cafe", "Hygiene", "Sport", "Health", "Phone", "Clothes", "Taxi", "Entertainment", "Transport", "Car" };
 
-        string[] AccName = { "Cash", "Card" };
+        string[] TemplAccName = { "Cash", "Card" };
 
         string[] ReportsMenuName = { "Change Account", "Date change", "Transaction to txt", "Export to CSV" };
 
@@ -215,14 +215,14 @@ namespace Monefy
                 case ConsoleKey.DownArrow:
                     if (select < len - 1)
                         select++;
-                    break; 
+                    break;
                 case ConsoleKey.UpArrow:
                     if (select > 0)
                         select--;
-                    break; 
+                    break;
                 case ConsoleKey.RightArrow:
                     select = len - 1;
-                    break; 
+                    break;
                 case ConsoleKey.LeftArrow:
                     select = 0;
                     break;
@@ -356,11 +356,6 @@ namespace Monefy
         //--------------------------------------------------------
         public void TemplateName()
         {
-            foreach (ConsoleColor item in Enum.GetValues(typeof(ConsoleColor)))
-            {
-                if (item != ConsoleColor.Black)
-                    CatNameCol.Add(item);
-            }
             //CatNameCol.Add(ConsoleColor.Magenta);
             //CatNameCol.Add(ConsoleColor.Blue);
             //CatNameCol.Add(ConsoleColor.Green);
@@ -374,12 +369,20 @@ namespace Monefy
             //CatNameCol.Add(ConsoleColor.DarkRed);
             //CatNameCol.Add(ConsoleColor.DarkGray);
 
-            for (int i = 0; i < CategName.Length; i++)
-                Application.getInstance().AddCategories(CategName[i], Type.Income);
+            foreach (ConsoleColor item in Enum.GetValues(typeof(ConsoleColor)))
+            {
+                if (item != ConsoleColor.Black)
+                    CatNameCol.Add(item);
+            }
 
-            for (int i = 0; i < AccName.Length; i++)
-                Application.getInstance().AddAccount(AccName[i], Currency.AZN, 0.0, false);
+            for (int i = 0; i < TemplCategName.Length; i++)
+                Application.getInstance().AddCategories(TemplCategName[i], Type.Outcome);
 
+            for (int i = 0; i < TemplAccName.Length; i++)
+                Application.getInstance().AddCategories(TemplAccName[i], Type.Income);
+
+            for (int i = 0; i < TemplAccName.Length; i++)
+                Application.getInstance().AddAccount(TemplAccName[i], Currency.AZN, 0.0, false);
 
             Application.Accounts[0].Active = true;
         }
@@ -504,7 +507,20 @@ namespace Monefy
             Menu(x, y, SettingsMenuName);
         }
         //--------------------------------------------------------
-        public void AddSubTrWindow(char type)
+        public int GetActiveAccount()
+        {
+            int index = 0;
+
+            for (int i = 0; i < Application.Accounts.Count; i++)
+            {
+                if (Application.Accounts[i].Active)
+                    index = i;
+            }
+
+            return index;
+        }
+        //--------------------------------------------------------
+        public void AddSubWindow(char type)
         {
             Frame((char)AddSubTrParam.ASChar, (int)AddSubTrParam.ASX, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASH, (int)AddSubTrParam.ASL, (ConsoleColor)AddSubTrParam.ASFC, (ConsoleColor)AddSubTrParam.ASBC, type == 'a' ? AddSubTrParam.Addition.ToString() : AddSubTrParam.Substract.ToString(), (ConsoleColor)AddSubTrParam.ASNC);
 
@@ -516,16 +532,8 @@ namespace Monefy
             Console.Write("Sum: ");
             int sum = Convert.ToInt32(Console.ReadLine());
 
-            int index = 0;
-
-            for (int i = 0; i < Application.Accounts.Count; i++)
-            {
-                if (Application.Accounts[i].Active)
-                    index = i;
-            }
-
             Console.SetCursorPosition((int)AddSubTrParam.ASX + 6 + sum.ToString().Length, (int)AddSubTrParam.ASY + 2);
-            Console.Write($"{Application.Accounts[index].Cur}");
+            Console.Write($"{Application.Accounts[GetActiveAccount()].Cur}");
 
             Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 4);
 
@@ -562,6 +570,15 @@ namespace Monefy
 
             Frame('s', (int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 1, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASH, (int)AddSubTrParam.ASL - 25, (ConsoleColor)AddSubTrParam.ASFC);
 
+            string[] AccName = new string[Application.Accounts.Count];
+            string[] CategName = new string[Application.Categories.Count];
+
+            for (int i = 0; i < Application.Accounts.Count; i++)
+                AccName[i] = Application.Accounts[i].Name;
+
+            for (int i = 0; i < Application.Categories.Count; i++)
+                CategName[i] = Application.Categories[i].Name;
+
             int MenuAns = Menu((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 2, (int)AddSubTrParam.ASY + 1, type == 's' ? AccName : CategName);
 
             Clear((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 1, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASL - 25, (int)AddSubTrParam.ASH);
@@ -592,9 +609,15 @@ namespace Monefy
             //puttext((int)AddSubParam.ASX + (int)AddSubParam.ASL + 1, (int)AddSubParam.ASY, (int)AddSubParam.ASX + (int)AddSubParam.ASL + 1 + (int)AddSubParam.ASL, (int)AddSubParam.ASY + (int)AddSubParam.ASH, destin);
 
             if (type == 'a')
-                Application.getInstance().AddOutcomes(sum, Application.Incomes[MenuAns], note, DateTime.Today);
+            {
+                Category temp = new Category(str, Type.Income);
+                Application.getInstance().AddOutcomes(sum, temp, note, DateTime.Today);
+            }
             else
-                Application.getInstance().AddOutcomes(sum, Application.Categories[MenuAns], note, DateTime.Today);
+            {
+                Category temp = new Category(str, Type.Outcome);
+                Application.getInstance().AddOutcomes(sum, temp, note, DateTime.Today);
+            }
 
             Console.Clear();
         }
@@ -638,8 +661,6 @@ namespace Monefy
                 note += ctemp;
             }
 
-
-
             Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 6);
 
             Console.BackgroundColor = ConsoleColor.Blue;
@@ -655,6 +676,11 @@ namespace Monefy
                 goto NOFROMENTER;
 
             Frame('s', (int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 1, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASH, (int)AddSubTrParam.ASL - 25, (ConsoleColor)AddSubTrParam.ASFC);
+
+            string[] AccName = new string[Application.Accounts.Count];
+
+            for (int i = 0; i < Application.Accounts.Count; i++)
+                AccName[i] = Application.Accounts[i].Name;
 
             int FromAns = Menu((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 2, (int)AddSubTrParam.ASY + 1, AccName);
 
@@ -695,6 +721,25 @@ namespace Monefy
             Console.Write(AccName[ToAns]);
 
             Console.BackgroundColor = ConsoleColor.Black;
+
+            Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 8);
+            Console.Write("Save or again?");
+
+            ANSAGAIN:
+            var ans = Console.ReadKey(true).Key;
+
+            switch (ans)
+            {
+                case ConsoleKey.Escape:
+                    goto BEGIN;
+                case ConsoleKey.Enter:
+                    break;
+                default:
+                    goto ANSAGAIN;
+            }
+
+            Category temp = new Category($"From {AccName[FromAns]} to {AccName[ToAns]}", Type.Income);
+            Application.getInstance().AddOutcomes(sum, temp, note, DateTime.Today);
 
             Console.Read();
         }
@@ -746,6 +791,19 @@ namespace Monefy
 
             //Balance Frame
             Frame((char)BalanceFrame.BalFChar, (int)BalanceFrame.BalFX, (int)BalanceFrame.BalFY, (int)BalanceFrame.BalFH, (int)BalanceFrame.BalFL, (ConsoleColor)BalanceFrame.BalFFC, (ConsoleColor)BalanceFrame.BalFBC, BalanceFrame.Balance.ToString());
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 1);
+            Console.WriteLine("Current balance: ");
+
+            Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 3);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Sum: ");
+
+            Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 5);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Spent: ");
+
 
             //Date
             Date();

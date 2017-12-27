@@ -19,7 +19,7 @@ namespace Monefy
         }
 
         static public List<MoneyOperation> Outcomes = new List<MoneyOperation>();
-        static public List<Category> Incomes = new List<Category>();
+        static public List<MoneyOperation> Incomes = new List<MoneyOperation>();
         static public List<Account> Accounts = new List<Account>();
         static public List<Category> Categories = new List<Category>();
         static public List<Subscription> Subscriptions = new List<Subscription>();
@@ -43,6 +43,13 @@ namespace Monefy
             MoneyOperation temp = new MoneyOperation(amount, cat, note, date);
 
             Outcomes.Add(temp);
+        }
+
+        public void AddIncomes(double amount, Category cat, string note, DateTime date)
+        {
+            MoneyOperation temp = new MoneyOperation(amount, cat, note, date);
+
+            Incomes.Add(temp);
         }
     }
 }
