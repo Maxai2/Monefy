@@ -12,11 +12,9 @@ namespace Monefy
         {
             Functions.getInstance().TemplateName();
             Console.CursorVisible = false;
-            //Functions.getInstance().CatNameStatusLine(100, 50, 5, 67, 34, 56, 34, 2, 4, 6, 23, 5);
 
             Functions.getInstance().DrawFrame();
             int select = 0;
-
 
             while (true)
             {

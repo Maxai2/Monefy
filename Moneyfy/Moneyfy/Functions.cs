@@ -134,9 +134,9 @@ namespace Monefy
         //--------------------------------------------------------
         //private FRAME_P MainFrame = {'d', 17, 2, 30, 80, ConsoleColor.Green, ConsoleColor.Black, [StringValue("")] MONEFY, ConsoleColor.Magenta  };
 
-        private enum MainFrame { MFChar = 'd', MFX = 17, MFY = 2, MFH = 30, MFL = 80, MFFC = ConsoleColor.Green, MFBC = ConsoleColor.Black, [StringValue("")] MONEFY, MFNC = ConsoleColor.Magenta }
+        private enum MainFrame { MFChar = 'd', MFX = 17, MFY = 2, MFH = 30, MFL = 82, MFFC = ConsoleColor.Green, MFBC = ConsoleColor.Black, [StringValue("")] MONEFY, MFNC = ConsoleColor.Magenta }
 
-        private enum ReportsFrame { RepFChar = 's', RepFX = MainFrame.MFX + 2, RepFY = MainFrame.MFY + 1, RepFH = 5, RepFL = 11, RepFFC = ConsoleColor.White, RepFBC = ConsoleColor.Black, [StringValue("")] Reports, RepFLL = 7, RepFLC = ConsoleColor.Red }
+        private enum ReportsFrame { RepFChar = 's', RepFX = MainFrame.MFX + 2, RepFY = MainFrame.MFY + 1, RepFH = 5, RepFL = 12, RepFFC = ConsoleColor.White, RepFBC = ConsoleColor.Black, [StringValue("")] Reports, RepFLL = 7, RepFLC = ConsoleColor.Gray }
 
         private enum TransferFrame { TraFChar = 's', TraFX = MainFrame.MFL - 10, TraFY = MainFrame.MFY + 1, TraFH = 5, TraFL = 12, TraFFC = ConsoleColor.White, TraFBC = ConsoleColor.Black, [StringValue("")] Transfer, TraFLL = 7, TraFLC = ConsoleColor.White }
 
@@ -146,11 +146,11 @@ namespace Monefy
 
         private enum AdditionFrame { AddFChar = 's', AddFX = MainFrame.MFL - 1, AddFY = MainFrame.MFH - 4, AddFH = 3, AddFL = 12, AddFFC = ConsoleColor.White, AddFBC = ConsoleColor.Black, [StringValue("")] Addition, AddFLL = 5, AddFLC = ConsoleColor.Yellow }
 
-        private enum BalanceFrame { BalFChar = 'd', BalFX = (MainFrame.MFL / 2) - (MainFrame.MFX / 2) + 5, BalFY = MainFrame.MFH - 6, BalFH = 7, BalFL = 40, BalFFC = ConsoleColor.DarkGreen, BalFBC = ConsoleColor.Black, [StringValue("")] Balance }
+        private enum BalanceFrame { BalFChar = 'd', BalFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) + 3, BalFY = MainFrame.MFH - 6, BalFH = 5, BalFL = 15, BalFFC = ConsoleColor.DarkGreen, BalFBC = ConsoleColor.Black, [StringValue("")] Balance }
 
         private enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 5, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")] Quit, ExFNC = ConsoleColor.Black }
 
-        private enum AddSubTrParam { ASChar = 's', ASX = MainFrame.MFX + 20, ASY = MainFrame.MFY + 8, ASH = 14, ASL = 40, ASFC = ConsoleColor.Gray, ASBC = ConsoleColor.Black, [StringValue("")] Addition, [StringValue("")] Substract, ASNC = ConsoleColor.Gray, [StringValue("")] Transfer }
+        private enum AddSubTrParam { ASChar = 's', ASX = MainFrame.MFX + 20, ASY = MainFrame.MFY + 8, ASH = 14, ASL = 42, ASFC = ConsoleColor.Gray, ASBC = ConsoleColor.Black, [StringValue("")] Addition, [StringValue("")] Substract, ASNC = ConsoleColor.Gray, [StringValue("")] Transfer }
 
         //private enum TransferParam { TrChar = 's', TrX = }
 
@@ -170,6 +170,10 @@ namespace Monefy
         string[] ReportsMenuName = { "Change Account", "Date change", "Transaction to txt", "Export to CSV" };
 
         string[] SettingsMenuName = { "Redact Category", "Redact Account", "Change Language", "Add/Change Money Limit", "Add/Change Subscription" };
+
+        string[] DateName = { "Day", "Week", "Month", "Year" };
+
+        double[] tempDouble = new double[Application.Categories.Count];
 
         private int x = 0, y = 0;
         //--------------------------------------------------------
@@ -338,20 +342,28 @@ namespace Monefy
             return BSDate;
         }
         //--------------------------------------------------------
-        private void Date()
+        private void Date(char type)
         {
             Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY);
             Console.ForegroundColor = (ConsoleColor)DateParam.DateColF;
-            Console.Write($"{DateTime.Today.DayOfWeek}, {DateTime.Today.Day} {MonthToString(DateTime.Today.Month)}");
 
-            //Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY + 1);
-            //Console.WriteLine($"{WeekBeginEnd(DateTime.Today)[0].Day} - {WeekBeginEnd(DateTime.Today)[1].Day} {MonthToString(DateTime.Today.Month)}");
-
-            //Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY + 2);
-            //Console.WriteLine($"{MonthToString(DateTime.Today.Month)}");
-
-            //Console.SetCursorPosition((int)DateParam.DateX, (int)DateParam.DateY + 3);
-            //Console.WriteLine($"{DateTime.Today.Year}");
+            switch (type)
+            {
+                case 'd':
+                    Console.Write($"{DateTime.Today.DayOfWeek}, {DateTime.Today.Day} {MonthToString(DateTime.Today.Month)}");
+                    break;
+                case 'w':
+                    Console.WriteLine($"{WeekBeginEnd(DateTime.Today)[0].Day} - {WeekBeginEnd(DateTime.Today)[1].Day} {MonthToString(DateTime.Today.Month)}");
+                    break;
+                case 'm':
+                    Console.WriteLine($"{MonthToString(DateTime.Today.Month)}");
+                    break;
+                case 'y':
+                    Console.WriteLine($"{DateTime.Today.Year}");
+                    break;
+                default:
+                    break;
+            }
         }
         //--------------------------------------------------------
         private void CategWrite()
@@ -405,13 +417,12 @@ namespace Monefy
         }
         //--------------------------------------------------------
         //public void CatNameStatusLine(double food, double home, double cafe, double hygiene, double sport, double health, double phone, double clothes, double taxi, double entertainment, double transport, double car)
-        private void CatNameStatusLine(params double[] cats)
+        private double[] CatNameStatusLine(char mode, params double[] cats)
         {
             double[] CatValue = new double[Application.Categories.Count];
             for (int i = 0; i < cats.Length; i++)
-            {
                 CatValue[i] = cats[i];
-            }
+
             //CatValue[0] = food;
             //CatValue[1] = home;
             //CatValue[2] = cafe;
@@ -425,17 +436,22 @@ namespace Monefy
             //CatValue[10] = transport;
             //CatValue[11] = car;
 
-            for (int i = 0; i < Application.Categories.Count; i++)
+            if (mode == 'w')
             {
-                Console.SetCursorPosition((int)MainFrame.MFX + 23, (int)MainFrame.MFY + 8 + i);
+                for (int i = 0; i < Application.Categories.Count; i++)
+                {
+                    Console.SetCursorPosition((int)MainFrame.MFX + 23, (int)MainFrame.MFY + 8 + i);
 
-                Console.ForegroundColor = CatNameCol[i];
-                for (int j = 0; j < CatValue[i] / 5; j++)
-                    Console.Write((char)0x2593);
-                Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ForegroundColor = CatNameCol[i];
+                    for (int j = 0; j < CatValue[i] / 5; j++)
+                        Console.Write((char)0x2593);
+                    Console.ForegroundColor = ConsoleColor.Gray;
 
-                Console.Write($" {CatValue[i]}%");
+                    Console.Write($" {CatValue[i]}%");
+                }
             }
+
+            return CatValue;
         }
         //--------------------------------------------------------
         public bool Exit()
@@ -509,6 +525,12 @@ namespace Monefy
             x = (int)MainFrame.MFX + 1;
             y = (int)MainFrame.MFY + 2;
 
+            Console.SetCursorPosition((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 6);
+            Console.WriteLine("---------------------");
+
+            Console.SetCursorPosition((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 8);
+            Console.WriteLine($"Active account: {Application.Accounts[GetActiveAccount()].Name}");
+
             Menu(x, y, ReportsMenuName);
         }
         //--------------------------------------------------------
@@ -543,6 +565,19 @@ namespace Monefy
 
             BEGIN:
             Clear((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 1, (int)AddSubTrParam.ASL - 2, (int)AddSubTrParam.ASH - 3);
+
+            if (type == 's' && Application.Accounts[GetActiveAccount()].Money == 0)
+            {
+                Console.SetCursorPosition((int)AddSubTrParam.ASX + 2, (int)AddSubTrParam.ASY + 5);
+
+                Console.WriteLine($"Your balance is zero in {Application.Accounts[GetActiveAccount()].Name} account,"); 
+
+                Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 6);
+                Console.WriteLine($"change account or increase your balance");
+
+                Console.ReadKey();
+                return;
+            }
 
             Console.CursorVisible = true;
             Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 2);
@@ -596,13 +631,13 @@ namespace Monefy
             for (int i = 0; i < Application.Categories.Count; i++)
                 CategName[i] = Application.Categories[i].Name;
 
-            int MenuAns = Menu((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 2, (int)AddSubTrParam.ASY + 1, type == 's' ? AccName : CategName);
+            int MenuAns = Menu((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 2, (int)AddSubTrParam.ASY + 1, type == 'a' ? AccName : CategName);
 
             Clear((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 1, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASL - 25, (int)AddSubTrParam.ASH);
 
             Console.SetCursorPosition((int)AddSubTrParam.ASX + 20, (int)AddSubTrParam.ASY + 6);
 
-            string str = type == 'a' ? CategName[MenuAns] : AccName[MenuAns];
+            string str = type == 'a' ? AccName[MenuAns] : CategName[MenuAns];
             Console.Write(str);
 
             Console.BackgroundColor = ConsoleColor.Black;
@@ -627,16 +662,20 @@ namespace Monefy
 
             if (type == 'a')
             {
+                Application.Accounts[GetActiveAccount()].Money += sum;
+
                 Category temp = new Category(str, Type.Income);
                 Application.getInstance().AddOutcomes(sum, temp, note, DateTime.Today);
             }
             else
             {
+                tempDouble = CatNameStatusLine('s');
+
+                tempDouble[MenuAns] = sum;
+
                 Category temp = new Category(str, Type.Outcome);
                 Application.getInstance().AddOutcomes(sum, temp, note, DateTime.Today);
             }
-
-            Console.Clear();
         }
         //--------------------------------------------------------
         public void TransferWindow()
@@ -800,7 +839,7 @@ namespace Monefy
             //Additional Frame
             Frame((char)AdditionFrame.AddFChar, (int)AdditionFrame.AddFX, (int)AdditionFrame.AddFY, (int)AdditionFrame.AddFH, (int)AdditionFrame.AddFL, (ConsoleColor)AdditionFrame.AddFFC, (ConsoleColor)AdditionFrame.AddFBC, AdditionFrame.Addition.ToString());
 
-            Console.SetCursorPosition((int)AdditionFrame.AddFX + 4, (int)AdditionFrame.AddFY + 1);
+            Console.SetCursorPosition((int)AdditionFrame.AddFX + 5, (int)AdditionFrame.AddFY + 1);
             Console.ForegroundColor = (ConsoleColor)AdditionFrame.AddFLC;
             Console.WriteLine("-+-");
 
@@ -808,33 +847,32 @@ namespace Monefy
             Frame((char)BalanceFrame.BalFChar, (int)BalanceFrame.BalFX, (int)BalanceFrame.BalFY, (int)BalanceFrame.BalFH, (int)BalanceFrame.BalFL, (ConsoleColor)BalanceFrame.BalFFC, (ConsoleColor)BalanceFrame.BalFBC, BalanceFrame.Balance.ToString());
 
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 1);
-            Console.WriteLine("Current balance: ");
+            Console.SetCursorPosition((int)BalanceFrame.BalFX + 2, (int)BalanceFrame.BalFY + 2);
+            Console.WriteLine($"{Application.Accounts[GetActiveAccount()].Money} {Application.Accounts[GetActiveAccount()].Cur}");
 
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 2);
-            Console.WriteLine("--------------------------------------");
+            //Console.ForegroundColor = ConsoleColor.DarkGray;
+            //Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 2);
+            //Console.WriteLine("--------------------------------------");
 
-            Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 3);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Sum: ");
+            //Console.SetCursorPosition((int)BalanceFrame.BalFX + 13, (int)BalanceFrame.BalFY + 3);
+            //Console.ForegroundColor = ConsoleColor.Green;
+            //Console.WriteLine("Sum: ");
 
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 4);
-            Console.WriteLine("--------------------------------------");
+            //Console.ForegroundColor = ConsoleColor.DarkGray;
+            //Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 4);
+            //Console.WriteLine("--------------------------------------");
 
-            Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 5);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Spent: ");
-
+            //Console.SetCursorPosition((int)BalanceFrame.BalFX + 11, (int)BalanceFrame.BalFY + 5);
+            //Console.ForegroundColor = ConsoleColor.Red;
+            //Console.WriteLine("Spent: ");
 
             //Date
-            Date();
+            Date('d');
 
             //CategoryName
             CategWrite();
 
-            CatNameStatusLine(100, 50, 5, 67, 34, 56, 34, 2, 4, 6, 23, 5);
+            CatNameStatusLine('w', tempDouble);
         }
     }
 }

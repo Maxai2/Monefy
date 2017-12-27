@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 //--------------------------------------------------------
 namespace Monefy
 {
+    //[Serializable]
     public class Application
     {
         private static Application instance;
@@ -17,7 +18,7 @@ namespace Monefy
 
             return instance;
         }
-
+        
         static public List<MoneyOperation> Outcomes = new List<MoneyOperation>();
         static public List<MoneyOperation> Incomes = new List<MoneyOperation>();
         static public List<Account> Accounts = new List<Account>();
