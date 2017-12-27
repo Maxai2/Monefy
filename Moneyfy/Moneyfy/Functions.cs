@@ -146,7 +146,7 @@ namespace Monefy
 
         private enum AdditionFrame { AddFChar = 's', AddFX = MainFrame.MFL - 1, AddFY = MainFrame.MFH - 4, AddFH = 3, AddFL = 12, AddFFC = ConsoleColor.White, AddFBC = ConsoleColor.Black, [StringValue("")] Addition, AddFLL = 5, AddFLC = ConsoleColor.Yellow }
 
-        private enum BalanceFrame { BalFChar = 'd', BalFX = (MainFrame.MFL / 2) - (MainFrame.MFX / 2), BalFY = MainFrame.MFH - 6, BalFH = 7, BalFL = 25, BalFFC = ConsoleColor.DarkGreen, BalFBC = ConsoleColor.Black, [StringValue("")] Balance }
+        private enum BalanceFrame { BalFChar = 'd', BalFX = (MainFrame.MFL / 2) - (MainFrame.MFX / 2) + 5, BalFY = MainFrame.MFH - 6, BalFH = 7, BalFL = 40, BalFFC = ConsoleColor.DarkGreen, BalFBC = ConsoleColor.Black, [StringValue("")] Balance }
 
         private enum ExitFrame { ExFChar = 'd', ExFX = (MainFrame.MFL / 2) + (MainFrame.MFX / 2) - 5, ExFY = MainFrame.MFH / 2, ExFH = 5, ExFL = 29, ExFFC = ConsoleColor.Black, ExFBC = ConsoleColor.Gray, [StringValue("")] Quit, ExFNC = ConsoleColor.Black }
 
@@ -175,12 +175,19 @@ namespace Monefy
         //--------------------------------------------------------
         public int Menu(int x, int y, string[] arr, int select = 0, int exception = -1)
         {
-            CONTI:
-            for (int i = 0; i < (exception >= 0 ? arr.Length - 1 : arr.Length); i++)
-            {
-                if (exception >= 0 && i == exception)
-                    continue;
+            string[] tempArr = new string[exception >= 0 ? arr.Length - 1 : arr.Length];
 
+            for (int i = 0; i < tempArr.Length; i++)
+            {
+                if (i != exception)
+                    tempArr[i] = arr[i];
+                else
+                    tempArr[i] = arr[i + 1];
+            }
+            
+            CONTI:
+            for (int i = 0; i < tempArr.Length; i++)
+            {
                 Console.SetCursorPosition(x, y + i);
 
                 if (i == select)
@@ -188,20 +195,33 @@ namespace Monefy
                 else
                     Console.ForegroundColor = ConsoleColor.Gray;
 
-                Console.WriteLine(arr[i]);
+                Console.WriteLine(tempArr[i]);
             }
 
-            int temp = MenuGo(select, exception >= 0 ? arr.Length - 1 : arr.Length);
-            select = temp;
+            int temp = MenuGo(select, tempArr.Length);
 
-            if (temp == -3)
+            if (temp == -2)
                 goto ENTER;
 
             if (temp >= 0)
+            {
+                select = temp;
                 goto CONTI;
+            }
 
             ENTER:
             Console.ForegroundColor = ConsoleColor.Gray;
+
+            if (exception >= 0)
+            {
+                for (int i = 0; i < arr.Length; i++)
+                    for (int j = 0; j < tempArr.Length; j++)
+                    {
+                        if (arr[i] == tempArr[j])
+                            select = i;
+                    }
+            }
+
             return select;
         }
         //--------------------------------------------------------
@@ -377,9 +397,6 @@ namespace Monefy
 
             for (int i = 0; i < TemplCategName.Length; i++)
                 Application.getInstance().AddCategories(TemplCategName[i], Type.Outcome);
-
-            for (int i = 0; i < TemplAccName.Length; i++)
-                Application.getInstance().AddCategories(TemplAccName[i], Type.Income);
 
             for (int i = 0; i < TemplAccName.Length; i++)
                 Application.getInstance().AddAccount(TemplAccName[i], Currency.AZN, 0.0, false);
@@ -661,7 +678,7 @@ namespace Monefy
                 note += ctemp;
             }
 
-            Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 6);
+            Console.SetCursorPosition((int)AddSubTrParam.ASX + 10, (int)AddSubTrParam.ASY + 6);
 
             Console.BackgroundColor = ConsoleColor.Blue;
 
@@ -686,7 +703,7 @@ namespace Monefy
 
             Clear((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 1, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASL - 25, (int)AddSubTrParam.ASH);
 
-            Console.SetCursorPosition((int)AddSubTrParam.ASX + 10, (int)AddSubTrParam.ASY + 6);
+            Console.SetCursorPosition((int)AddSubTrParam.ASX + 20, (int)AddSubTrParam.ASY + 6);
 
             Console.Write(AccName[FromAns]);
 
@@ -699,8 +716,8 @@ namespace Monefy
 
             Console.BackgroundColor = ConsoleColor.Blue;
 
-            Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 9);
-            Console.WriteLine("To -> ");
+            Console.SetCursorPosition((int)AddSubTrParam.ASX + 10, (int)AddSubTrParam.ASY + 9);
+            Console.WriteLine("To   -> ");
 
             Console.CursorVisible = false;
 
@@ -716,13 +733,13 @@ namespace Monefy
 
             Clear((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 1, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASL - 25, (int)AddSubTrParam.ASH);
 
-            Console.SetCursorPosition((int)AddSubTrParam.ASX + 10, (int)AddSubTrParam.ASY + 9);
+            Console.SetCursorPosition((int)AddSubTrParam.ASX + 20, (int)AddSubTrParam.ASY + 9);
 
             Console.Write(AccName[ToAns]);
 
             Console.BackgroundColor = ConsoleColor.Black;
 
-            Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 8);
+            Console.SetCursorPosition((int)AddSubTrParam.ASX + 1, (int)AddSubTrParam.ASY + 11);
             Console.Write("Save or again?");
 
             ANSAGAIN:
@@ -740,8 +757,6 @@ namespace Monefy
 
             Category temp = new Category($"From {AccName[FromAns]} to {AccName[ToAns]}", Type.Income);
             Application.getInstance().AddOutcomes(sum, temp, note, DateTime.Today);
-
-            Console.Read();
         }
         //--------------------------------------------------------
         public void DrawFrame()
@@ -796,9 +811,17 @@ namespace Monefy
             Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 1);
             Console.WriteLine("Current balance: ");
 
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 2);
+            Console.WriteLine("--------------------------------------");
+
             Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 3);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Sum: ");
+
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 4);
+            Console.WriteLine("--------------------------------------");
 
             Console.SetCursorPosition((int)BalanceFrame.BalFX + 1, (int)BalanceFrame.BalFY + 5);
             Console.ForegroundColor = ConsoleColor.Red;
