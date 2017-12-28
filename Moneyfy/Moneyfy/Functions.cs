@@ -167,9 +167,9 @@ namespace Monefy
 
         string[] TemplAccName = { "Cash", "Card" };
 
-        string[] ReportsMenuName = { "Change Account", "Date change", "Transaction to txt", "Export to CSV" };
+        string[] ReportsMenuName = { "Change Account", "Date change", "Transaction to txt", "Export to CSV", "Back" };
 
-        string[] SettingsMenuName = { "Redact Category", "Redact Account", "Change Language", "Add/Change Money Limit", "Add/Change Subscription" };
+        string[] SettingsMenuName = { "Redact Category", "Redact Account", "Change Language", "Add/Change Money Limit", "Add/Change Subscription", "Back" };
 
         string[] DateName = { "Day", "Week", "Month", "Year" };
 
@@ -516,6 +516,25 @@ namespace Monefy
             }
         }
         //--------------------------------------------------------
+        public string[] GetCurrentName(char whom)
+        {
+            if (whom == 'a')
+            {
+                string[] AccName = new string[Application.Accounts.Count];
+                for (int i = 0; i < Application.Accounts.Count; i++)
+                    AccName[i] = Application.Accounts[i].Name;
+
+                return AccName;
+            }
+            else
+            {
+                string[] CategName = new string[Application.Categories.Count];
+                for (int i = 0; i < Application.Categories.Count; i++)
+                    CategName[i] = Application.Categories[i].Name;
+                return CategName;
+            }
+        }
+        //--------------------------------------------------------
         public void ReportWindow()
         {
             Frame((char)ReportsFrame.RepFChar, (int)MainFrame.MFX, (int)MainFrame.MFY, (int)MainFrame.MFH, (int)ReportsFrame.RepFL + 11, (ConsoleColor)ReportsFrame.RepFFC, (ConsoleColor)ReportsFrame.RepFBC, ReportsFrame.Reports.ToString());
@@ -525,13 +544,43 @@ namespace Monefy
             x = (int)MainFrame.MFX + 1;
             y = (int)MainFrame.MFY + 2;
 
-            Console.SetCursorPosition((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 6);
+            Console.SetCursorPosition((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 7);
             Console.WriteLine("---------------------");
-
-            Console.SetCursorPosition((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 8);
+            
+            CHANGEACC:
+            Clear((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 8, (int)ReportsFrame.RepFL + 9, 1);
+            Console.SetCursorPosition((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 9);
             Console.WriteLine($"Active account: {Application.Accounts[GetActiveAccount()].Name}");
 
-            Menu(x, y, ReportsMenuName);
+            CONTI:
+            int sel = Menu(x, y, ReportsMenuName), ans = 0;
+
+            switch (sel)
+            {
+                case 0:
+                    Frame('s', (int)MainFrame.MFX + 1, (int)MainFrame.MFY + 12, Application.Accounts.Count + 5, (int)ReportsFrame.RepFL + 9, ConsoleColor.Yellow, (ConsoleColor)ReportsFrame.RepFBC, ReportsMenuName[sel]);
+
+                    ans = Menu((int)MainFrame.MFX + 2, (int)MainFrame.MFY + 14, GetCurrentName('a'));
+
+                    Application.Accounts[GetActiveAccount()].Active = false;
+                    Application.Accounts[ans].Active = true;
+
+                    Clear((int)MainFrame.MFX + 1, (int)MainFrame.MFY + 12, (int)ReportsFrame.RepFL + 9, Application.Accounts.Count + 5);
+                    goto CHANGEACC;
+                case 1:
+                    Frame('s', (int)MainFrame.MFX + 1, (int)MainFrame.MFY + 12, Application.Accounts.Count + 5, (int)ReportsFrame.RepFL + 9, ConsoleColor.Yellow, (ConsoleColor)ReportsFrame.RepFBC, ReportsMenuName[sel]);
+
+                    ans = Menu((int)MainFrame.MFX + 2, (int)MainFrame.MFY + 14, GetCurrentName('a'));
+                    break;
+                case 4:
+                    goto EXIT;
+                default:
+                    break;
+            }
+            goto CONTI;
+
+            EXIT:
+            return;
         }
         //--------------------------------------------------------
         public void SettingsWindow()
@@ -622,14 +671,8 @@ namespace Monefy
 
             Frame('s', (int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 1, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASH, (int)AddSubTrParam.ASL - 25, (ConsoleColor)AddSubTrParam.ASFC);
 
-            string[] AccName = new string[Application.Accounts.Count];
-            string[] CategName = new string[Application.Categories.Count];
-
-            for (int i = 0; i < Application.Accounts.Count; i++)
-                AccName[i] = Application.Accounts[i].Name;
-
-            for (int i = 0; i < Application.Categories.Count; i++)
-                CategName[i] = Application.Categories[i].Name;
+            string[] AccName = GetCurrentName('a');
+            string[] CategName = GetCurrentName('c');
 
             int MenuAns = Menu((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 2, (int)AddSubTrParam.ASY + 1, type == 'a' ? AccName : CategName);
 
@@ -669,12 +712,12 @@ namespace Monefy
             }
             else
             {
+                Category temp = new Category(str, Type.Outcome);
+                Application.getInstance().AddOutcomes(sum, temp, note, DateTime.Today);
+
                 tempDouble = CatNameStatusLine('s');
 
                 tempDouble[MenuAns] = sum;
-
-                Category temp = new Category(str, Type.Outcome);
-                Application.getInstance().AddOutcomes(sum, temp, note, DateTime.Today);
             }
         }
         //--------------------------------------------------------
@@ -733,10 +776,7 @@ namespace Monefy
 
             Frame('s', (int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 1, (int)AddSubTrParam.ASY, (int)AddSubTrParam.ASH, (int)AddSubTrParam.ASL - 25, (ConsoleColor)AddSubTrParam.ASFC);
 
-            string[] AccName = new string[Application.Accounts.Count];
-
-            for (int i = 0; i < Application.Accounts.Count; i++)
-                AccName[i] = Application.Accounts[i].Name;
+            string[] AccName = GetCurrentName('a');
 
             int FromAns = Menu((int)AddSubTrParam.ASX + (int)AddSubTrParam.ASL + 2, (int)AddSubTrParam.ASY + 1, AccName);
 
